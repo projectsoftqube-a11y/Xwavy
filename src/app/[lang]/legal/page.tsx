@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { getLocale } from "@/i18n/get-dictionary";
 import { pageCopy } from "@/i18n/page-copy";
-import copy, { LEGAL_SLUGS } from "@/i18n/pages/legal";
+import copy, { LEGAL_SLUGS, readingMinutes } from "@/i18n/pages/legal";
 import { localeHref } from "@/lib/href";
 import { pageMetadata } from "@/lib/metadata";
 import { LegalHeader } from "@/sections/legal/LegalHeader";
@@ -20,7 +20,14 @@ export default async function LegalHubPage() {
 
   return (
     <>
-      <LegalHeader id="lg-title" eyebrow={t.hub.eyebrow} title={t.hub.titleLead} accent={t.hub.titleAccent} body={t.hub.body} draftBadge={t.draftBadge} />
+      <LegalHeader id="lg-title" eyebrow={t.hub.eyebrow} title={t.hub.titleLead} accent={t.hub.titleAccent} body={t.hub.body}
+        draftBadge={t.draftBadge}
+        facts={[
+          { value: LEGAL_SLUGS.length, label: t.factLabels.policies },
+          { value: LEGAL_SLUGS.reduce((sum, slug) => sum + readingMinutes(t.docs[slug]), 0), label: t.factLabels.minutes },
+        ]}
+        note={t.contactNote}
+      />
 
       <LegalIndex
         id="lg-docs"

@@ -10,13 +10,13 @@ const en = {
   meta: {
     title: "Browse ideas",
     description:
-      "Every idea on Xwavy is reviewed by a person before it’s published. Browse the summaries free; subscribers see the full picture. Contact details are never public.",
+      "Discover bold ideas on Xwavy. Every idea is reviewed by a person before it’s published. Browse the summaries free; subscribers see the full picture. Contact details are never public.",
   },
   hero: {
     eyebrow: "Browse ideas",
-    titleLead: "Every published idea,",
+    titleLead: "Discover bold ideas,",
     titleAccent: "free to browse.",
-    body: "The Xwavy directory lists every idea that has passed review. Anyone can browse the summaries; subscribers see the full picture and can ask for an introduction.",
+    body: "Browse every idea that has passed review, and find the one that matches your investment thesis. Anyone can read the summaries; subscribers see the full picture and can ask for an introduction.",
     primary: "Open the directory",
     secondary: "How it works",
     points: ["Reviewed by a person before publishing", "Filter by sector, stage, region and keyword", "Contact details never public"],
@@ -77,13 +77,13 @@ const ar: typeof en = {
   meta: {
     title: "تصفّح الأفكار",
     description:
-      "يراجع شخص من فريقنا كل فكرة على Xwavy قبل نشرها. تصفّح الملخصات مجانًا، ويرى المشتركون الصورة الكاملة. ولا تكون بيانات التواصل عامة أبدًا.",
+      "اكتشف أفكارًا طموحة على Xwavy. يراجع شخص من فريقنا كل فكرة قبل نشرها. تصفّح الملخصات مجانًا، ويرى المشتركون الصورة الكاملة. ولا تكون بيانات التواصل عامة أبدًا.",
   },
   hero: {
     eyebrow: "تصفّح الأفكار",
-    titleLead: "كل فكرة منشورة،",
-    titleAccent: "تصفّحها مجانًا.",
-    body: "يضم دليل Xwavy كل فكرة اجتازت المراجعة. يمكن لأي شخص تصفّح الملخصات، ويرى المشتركون الصورة الكاملة ويمكنهم طلب التعارف.",
+    titleLead: "اكتشف أفكارًا طموحة،",
+    titleAccent: "وتصفّحها مجانًا.",
+    body: "تصفّح كل فكرة اجتازت المراجعة، واعثر على الفكرة التي تناسب أطروحتك الاستثمارية. يمكن لأي شخص قراءة الملخصات، ويرى المشتركون الصورة الكاملة ويمكنهم طلب التعارف.",
     primary: "افتح الدليل",
     secondary: "كيف تعمل المنصة",
     points: ["يراجعها شخص من فريقنا قبل النشر", "التصفية حسب القطاع والمرحلة والمنطقة والكلمات المفتاحية", "بيانات التواصل ليست عامة أبدًا"],

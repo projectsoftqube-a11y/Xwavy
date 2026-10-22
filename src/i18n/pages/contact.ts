@@ -15,7 +15,7 @@ const en = {
     eyebrow: "Contact",
     titleLead: "Talk to",
     titleAccent: "the Xwavy team.",
-    body: "Questions about posting an idea, investor plans, partnerships or anything else? Choose a topic so your message reaches the right people.",
+    body: "Whether you’re an innovator with a question, an investor wanting to join or a partner looking to collaborate, we’d love to hear from you. Choose a topic so your message reaches the right people.",
   },
   form: {
     eyebrow: "Send a message",
@@ -61,7 +61,7 @@ const ar: typeof en = {
     eyebrow: "اتصل بنا",
     titleLead: "تحدّث مع",
     titleAccent: "فريق Xwavy.",
-    body: "لديك سؤال عن نشر فكرة، أو باقات المستثمرين، أو الشراكات، أو أي أمر آخر؟ اختر الموضوع لتصل رسالتك إلى الأشخاص المعنيين.",
+    body: "سواء كنت مبتكرًا لديك سؤال، أو مستثمرًا يرغب في الانضمام، أو شريكًا يتطلع إلى التعاون، يسعدنا أن نسمع منك. اختر الموضوع لتصل رسالتك إلى الأشخاص المعنيين.",
   },
   form: {
     eyebrow: "أرسل رسالة",

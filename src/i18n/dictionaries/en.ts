@@ -1,8 +1,9 @@
 /**
  * English copy. Source of truth for every string on the public site.
  *
- * Written from the client's documents (copies in docs/client/), not from the
- * old xwavy.com site, whose content Wavy Solutions confirmed is dummy data:
+ * Written from the client's documents (copies in docs/client/). Wording also
+ * draws on the old xwavy.com copy where it fits these documents; its figures,
+ * people, testimonials and listings are dummy data and are never used:
  *   - "Xwavy Scope of Work, Site Map and Flowcharts" v1.0, 18 Aug 2026
  *   - "Response to Clarifications for the Revised Scope of Work", 16 Sep 2026
  *
@@ -46,7 +47,7 @@ const en = {
     title: "Xwavy: where ideas meet investment",
     titleTemplate: "%s | Xwavy",
     description:
-      "Xwavy is the marketplace where innovators publish ideas free and investors subscribe to see the full picture and request introductions. Contact is shared only when both sides agree.",
+      "Connect your idea with the right investor. On Xwavy, innovators publish ideas free and investors subscribe to see the full picture and request introductions. Contact is shared only when both sides agree.",
   },
 
   common: {
@@ -118,7 +119,7 @@ const en = {
       eyebrow: "The innovator and investor marketplace",
       /** Rendered as one headline; "after" is the serif accent. */
       title: { line1: "Where ideas", before: "meet", after: "investment." },
-      body: "Innovators publish what they’re building, free. Investors subscribe to see the full picture and ask for an introduction. Contact details move only when both sides say yes.",
+      body: "Bold innovators share what they’re building, free. Investors subscribe to see the full picture and ask for an introduction. Contact details move only when both sides say yes.",
       primaryCta: "Post your idea, free",
       secondaryCta: "I invest",
       points: [
@@ -136,12 +137,12 @@ const en = {
     },
 
     roles: {
-      eyebrow: "Two sides, one platform",
-      titleLead: "Built for both sides",
-      titleAccent: "of the table.",
+      eyebrow: "Built for two worlds",
+      titleLead: "Innovators and investors,",
+      titleAccent: "together.",
       innovators: {
         label: "For innovators",
-        title: "Publish free. Stay in control.",
+        title: "Turn your idea into reality.",
         points: [
           "Post your idea free. No listing fees, no commission",
           "Your contact details stay sealed until you accept",
@@ -152,7 +153,7 @@ const en = {
       },
       investors: {
         label: "For investors",
-        title: "Curated deal flow. Warm introductions.",
+        title: "Find your next big deal.",
         points: [
           "Browse every published idea before you pay",
           "Unlock financials, traction, team and the deck",

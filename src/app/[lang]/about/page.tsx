@@ -1,4 +1,4 @@
-import { Handshake, LockKeyhole, ShieldCheck, Sprout } from "lucide-react";
+import { Globe, LockKeyhole, ShieldCheck, Sprout } from "lucide-react";
 import type { Metadata } from "next";
 
 import { CardGrid } from "@/components/sections/CardGrid";
@@ -12,7 +12,7 @@ import imagesCopy from "@/i18n/pages/images";
 import { portalHref } from "@/lib/href";
 import { pageMetadata } from "@/lib/metadata";
 
-const PRINCIPLE_ICONS = [LockKeyhole, ShieldCheck, Sprout, Handshake] as const;
+const PRINCIPLE_ICONS = [LockKeyhole, ShieldCheck, Sprout, Globe] as const;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await pageCopy(copy);

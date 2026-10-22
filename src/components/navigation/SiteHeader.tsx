@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
+import { DesktopNav } from "@/components/navigation/DesktopNav";
 import { LanguageSwitcher } from "@/components/navigation/LanguageSwitcher";
 import { MobileMenu } from "@/components/navigation/MobileMenu";
 import { Button } from "@/components/ui/Button";
@@ -48,20 +49,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
             />
           </Link>
 
-          <nav aria-label={dict.common.nav.label} className="hidden xl:block">
-            <ul className="flex items-center gap-0.5">
-              {items.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="inline-flex min-h-10 items-center rounded-full px-3 text-xs xl:text-sm text-mist transition-colors hover:bg-white/5 hover:text-white"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <DesktopNav label={dict.common.nav.label} items={items} />
 
           <div className="flex items-center gap-1">
             {/* Visibility is set on wrappers: the components carry their own display class. */}

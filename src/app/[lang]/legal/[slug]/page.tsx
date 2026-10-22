@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { locales } from "@/i18n/config";
 import { getLocale } from "@/i18n/get-dictionary";
 import { pageCopy } from "@/i18n/page-copy";
-import copy, { LEGAL_SLUGS, type LegalSlug } from "@/i18n/pages/legal";
+import copy, { LEGAL_SLUGS, readingMinutes, type LegalSlug } from "@/i18n/pages/legal";
 import { localeHref } from "@/lib/href";
 import { pageMetadata } from "@/lib/metadata";
 import { LegalArticle } from "@/sections/legal/LegalArticle";
@@ -34,7 +34,14 @@ export default async function LegalDocPage({ params }: PageProps<"/[lang]/legal/
 
   return (
     <>
-      <LegalHeader id="lg-doc-title" eyebrow={t.hub.eyebrow} title={doc.title} body={doc.summary} draftBadge={t.draftBadge} />
+      <LegalHeader id="lg-doc-title" eyebrow={t.hub.eyebrow} title={doc.title} body={doc.summary}
+        draftBadge={t.draftBadge}
+        facts={[
+          { value: doc.sections.length, label: t.factLabels.sections },
+          { value: readingMinutes(doc), label: t.factLabels.minutes },
+        ]}
+        note={t.contactNote}
+      />
       <LegalArticle
         sections={doc.sections}
         draftNote={t.draftNote}

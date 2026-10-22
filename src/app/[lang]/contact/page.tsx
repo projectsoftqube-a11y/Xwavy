@@ -23,8 +23,8 @@ export default async function ContactPage() {
 
   return (
     <>
-      <ContactHero t={t} email={siteConfig.email} photo={{ src: "/images/site/ct-desk.webp", alt: alt.ctDesk }} />
-      <HelpLinks t={t.links} hrefs={t.links.cards.map((card) => localeHref(locale, card.href))} />
+      <ContactHero t={t} email={siteConfig.email} />
+      <HelpLinks t={t.links} hrefs={t.links.cards.map((card) => localeHref(locale, card.href))} photo={{ src: "/images/site/ct-desk.webp", alt: alt.ctDesk }} />
     </>
   );
 }

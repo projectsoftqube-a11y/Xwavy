@@ -180,7 +180,7 @@ export function MobileMenu({ items, locale, labels, signInHref, postIdeaHref, br
                     <nav aria-label={labels.menu} className="mt-6">
                       <ol className="flex flex-col">
                         {items.map((item, i) => {
-                          const current = pathname === item.href;
+                          const current = pathname === item.href || pathname.startsWith(`${item.href}/`);
                           return (
                             <li key={item.href} className="overflow-hidden border-b border-white/10">
                               <motion.div

@@ -1,4 +1,5 @@
 import { ArrowUpRight, BookOpen, CreditCard, Scale } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/animation/Reveal";
@@ -6,19 +7,25 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type copy from "@/i18n/pages/contact";
 
-type HelpLinksProps = { t: (typeof copy)["en"]["links"]; hrefs: readonly string[] };
+type HelpLinksProps = { t: (typeof copy)["en"]["links"]; hrefs: readonly string[]; photo: { src: string; alt: string } };
 
 const ICONS = [BookOpen, CreditCard, Scale] as const;
 
 /**
- * "Before you write": self-serve answers as large link rows. On hover a row
- * fills dark from its edge and its arrow turns.
+ * "Before you write": the heading and a photograph on one side, self-serve
+ * answers as large link rows on the other. On hover a row fills dark from its
+ * edge and its arrow turns.
  */
-export function HelpLinks({ t, hrefs }: HelpLinksProps) {
+export function HelpLinks({ t, hrefs, photo }: HelpLinksProps) {
   return (
     <Section tone="surface" aria-labelledby="ct-links">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
-        <SectionHeading id="ct-links" eyebrow={t.eyebrow} title={t.titleLead} accent={t.titleAccent} className="lg:col-span-4" />
+        <div className="flex flex-col gap-8 lg:col-span-4">
+          <SectionHeading id="ct-links" eyebrow={t.eyebrow} title={t.titleLead} accent={t.titleAccent} />
+          <Reveal variant="image" className="relative aspect-16/10 overflow-hidden rounded-3xl bg-navy lg:aspect-auto lg:min-h-48 lg:flex-1">
+            <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1024px) 30vw, 100vw" className="object-cover" />
+          </Reveal>
+        </div>
 
         <Reveal as="ul" stagger className="flex flex-col gap-3 lg:col-span-8">
           {t.cards.map((card, i) => {

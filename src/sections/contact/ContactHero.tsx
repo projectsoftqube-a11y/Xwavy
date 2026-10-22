@@ -7,10 +7,11 @@ import { useId, useRef, useState, type FormEvent } from "react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import type copy from "@/i18n/pages/contact";
+import { cn } from "@/lib/cn";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { EASE, MEDIA } from "@/lib/motion";
 
-type ContactHeroProps = { t: (typeof copy)["en"]; email: string; photo: { src: string; alt: string } };
+type ContactHeroProps = { t: (typeof copy)["en"]; email: string };
 
 const field =
   "w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink transition-colors placeholder:text-muted hover:border-field focus:border-cyan-ink focus:bg-white focus:outline-2 focus:outline-cyan/40";
@@ -21,7 +22,7 @@ const field =
  * the topic routes by subject line: submitting opens the visitor's email app
  * with everything filled in. Nothing is sent from the website itself.
  */
-export function ContactHero({ t, email, photo }: ContactHeroProps) {
+export function ContactHero({ t, email }: ContactHeroProps) {
   const root = useRef<HTMLElement>(null);
   const id = useId();
   const [topic, setTopic] = useState(t.form.topics[0] ?? "");
@@ -53,7 +54,7 @@ export function ContactHero({ t, email, photo }: ContactHeroProps) {
   return (
     <section ref={root} aria-labelledby="ct-title" className="surface-abyss bg-grid panel mt-(--panel-inset)">
       <Container className="grid grid-cols-1 gap-10 pt-[calc(var(--panel-inset)+6.5rem)] pb-section-sm lg:grid-cols-12 lg:gap-14 lg:pt-[calc(var(--panel-inset)+7.5rem)]">
-        <div data-intro className="flex flex-col gap-6 lg:col-span-5 lg:py-6">
+        <div data-intro className="flex flex-col gap-6 lg:col-span-5 lg:justify-center lg:py-6">
           <p data-hero-fade className="inline-flex w-fit items-center gap-2.5 rounded-full border border-white/12 bg-white/5 py-1 ps-1 pe-3.5 font-mono text-eyebrow text-mist uppercase">
             <Image src="/brand/xwavy-mark.png" alt="" aria-hidden width={24} height={24} className="size-6 shrink-0 rounded-[0.4rem] ring-1 ring-white/15" />
             {t.hero.eyebrow}
@@ -79,10 +80,6 @@ export function ContactHero({ t, email, photo }: ContactHeroProps) {
             </span>
           </a>
 
-          <div data-hero-fade className="relative hidden aspect-3/2 overflow-hidden rounded-2xl bg-navy lg:block">
-            <Image src={photo.src} alt={photo.alt} fill sizes="35vw" className="object-cover" />
-          </div>
-
           <p data-hero-fade className="flex items-start gap-2.5 text-sm text-mist">
             <ShieldAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-gold" />
             {t.form.privacyNote}
@@ -91,7 +88,7 @@ export function ContactHero({ t, email, photo }: ContactHeroProps) {
 
         {/* The form. */}
         <div data-intro data-form-card className="lg:col-span-7">
-          <form onSubmit={onSubmit} aria-labelledby={`${id}-form-title`} className="flex flex-col gap-5 rounded-3xl bg-white p-5 text-ink sm:p-8">
+          <form onSubmit={onSubmit} aria-labelledby={`${id}-form-title`} className="flex flex-col gap-5 rounded-3xl bg-white p-5 text-ink shadow-elevated sm:p-8">
             <div>
               <h2 id={`${id}-form-title`} className="text-h3">
                 {t.form.titleLead} <span className="accent text-cyan-ink">{t.form.titleAccent}</span>
@@ -133,7 +130,7 @@ export function ContactHero({ t, email, photo }: ContactHeroProps) {
               <label htmlFor={`${id}-message`} className="text-sm font-medium">
                 {t.form.messageLabel}
               </label>
-              <textarea id={`${id}-message`} name="message" rows={5} required placeholder={t.form.messagePlaceholder} className={field} />
+              <textarea id={`${id}-message`} name="message" rows={5} required placeholder={t.form.messagePlaceholder} className={cn(field, "min-h-36 resize-y")} />
             </div>
 
             <Button type="submit" variant="primary" size="lg" arrow className="w-fit">

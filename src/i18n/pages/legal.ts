@@ -29,6 +29,7 @@ const en = {
     "These documents describe how the platform is designed to work. They are drafts pending legal review and will be finalised, with the operating details, before launch.",
   readLabel: "Read",
   tocLabel: "On this page",
+  factLabels: { policies: "Policies", sections: "Sections", minutes: "Minutes to read" },
   otherLabel: "Other policies",
   contactNote: "Questions about these policies? Write to info@xwavy.com.",
   docs: {
@@ -72,7 +73,7 @@ const en = {
         },
         {
           title: "Introduction requests and the quota",
-          body: ["Only subscribed investors can send introduction requests."],
+          body: ["Introduction requests to innovators can be sent only by subscribed investors."],
           points: [
             "Each request uses one slot from the monthly quota. A request that can’t be sent does not use a slot.",
             "The innovator may accept or decline, and doesn’t have to give a reason.",
@@ -82,15 +83,37 @@ const en = {
           ],
         },
         {
+          title: "Your ideas and intellectual property",
+          body: ["You keep ownership of your ideas and of everything you post. Xwavy does not claim ownership of any idea."],
+          points: [
+            "You confirm that you own what you post, or have the right to share it.",
+            "You give Xwavy a non-exclusive, royalty-free permission to display your content on the platform, at the layers described in these terms, for as long as it is listed.",
+          ],
+        },
+        {
+          title: "Conduct between members",
+          body: [
+            "Members agree to deal with each other in good faith. Any discussion, due diligence or agreement after an introduction is solely between the two parties, and Xwavy is not responsible for its outcome.",
+          ],
+        },
+        {
           title: "What Xwavy does not do",
           body: [
             "Xwavy does not take money for investments, hold funds, issue or transfer equity, prepare term sheets or advise either party on whether a deal is a good one. See the no-advice disclaimer.",
           ],
         },
         {
+          title: "The platform itself",
+          body: [
+            "The Xwavy platform, including its design, logo and the content Xwavy creates, is protected by intellectual property laws. Don’t copy or reproduce it without our written permission.",
+            "Xwavy is provided as it is. We work to keep it available and accurate, but we don’t guarantee it will be uninterrupted or error-free, and we don’t endorse or verify the ideas, figures or claims members publish.",
+            "To the extent the law allows, Xwavy is not liable for indirect or consequential losses arising from use of the platform, including lost profits or lost investment.",
+          ],
+        },
+        {
           title: "Suspension and changes",
           body: [
-            "We may suspend or close accounts that breach these terms or the acceptable-use policy. We may update these terms; the current version will always be published on this page.",
+            "We may suspend or close accounts that breach these terms or the acceptable-use policy, and you can delete your account at any time from your settings. We may update these terms; we’ll give notice of significant changes on the platform, and the current version will always be published on this page.",
           ],
         },
       ],
@@ -136,11 +159,25 @@ const en = {
           ],
         },
         {
+          title: "Keeping information secure",
+          body: [
+            "We protect your information with industry-standard security measures, and contact details are stored sealed. No way of sending or storing data online is completely secure, so we can’t promise absolute security.",
+          ],
+        },
+        {
           title: "Your choices",
           body: [
-            "You can edit your profile and contact block, change notification preferences, and deactivate or delete your account from your settings. For any other privacy request, write to info@xwavy.com.",
+            "You can edit your profile and contact block, change notification preferences, and deactivate or delete your account from your settings. You can also ask us to access, correct or delete your personal information, or to restrict or object to how we use it, by writing to info@xwavy.com.",
             "Xwavy is being built with Saudi PDPL requirements in mind. The legal basis for processing and the details of your rights will be completed after legal review.",
           ],
+        },
+        {
+          title: "Links to other websites",
+          body: ["The platform may link to other websites. We aren’t responsible for their privacy practices, so please read their policies."],
+        },
+        {
+          title: "Changes to this policy",
+          body: ["We may update this policy. We’ll give notice of significant changes on the platform or by email, and the current version will always be published on this page."],
         },
       ],
     },
@@ -269,6 +306,7 @@ const ar: typeof en = {
     "تصف هذه المستندات الطريقة التي صُممت المنصة لتعمل بها. وهي مسودات قيد المراجعة القانونية، وستُعتمد صيغتها النهائية، مع التفاصيل التشغيلية، قبل الإطلاق.",
   readLabel: "اقرأ",
   tocLabel: "في هذه الصفحة",
+  factLabels: { policies: "السياسات", sections: "الأقسام", minutes: "دقائق للقراءة" },
   otherLabel: "سياسات أخرى",
   contactNote: "لديك أسئلة حول هذه السياسات؟ راسلنا على info@xwavy.com.",
   docs: {
@@ -312,7 +350,7 @@ const ar: typeof en = {
         },
         {
           title: "طلبات التعارف والحصة",
-          body: ["يقتصر إرسال طلبات التعارف على المستثمرين المشتركين."],
+          body: ["لا يرسل طلبات التعارف إلى المبتكرين إلا المستثمرون المشتركون."],
           points: [
             "يستهلك كل طلب خانة واحدة من الحصة الشهرية. والطلب الذي يتعذّر إرساله لا يستهلك أي خانة.",
             "للمبتكر أن يقبل الطلب أو يرفضه، ولا يلزمه ذكر السبب.",
@@ -322,15 +360,37 @@ const ar: typeof en = {
           ],
         },
         {
+          title: "أفكارك وملكيتك الفكرية",
+          body: ["تبقى ملكية أفكارك وكل ما تنشره لك. ولا تدّعي Xwavy ملكية أي فكرة."],
+          points: [
+            "تؤكد أنك تملك ما تنشره، أو أن لديك الحق في مشاركته.",
+            "تمنح Xwavy إذنًا غير حصري ودون مقابل لعرض محتواك على المنصة، وفق المستويات الموضحة في هذه الشروط، طوال مدة إدراجه.",
+          ],
+        },
+        {
+          title: "التعامل بين الأعضاء",
+          body: [
+            "يلتزم الأعضاء بالتعامل مع بعضهم بحسن نية. وأي نقاش أو فحص للفرصة أو اتفاق بعد التعارف يكون بين الطرفين وحدهما، ولا تتحمل Xwavy مسؤولية نتيجته.",
+          ],
+        },
+        {
           title: "ما لا تقوم به Xwavy",
           body: [
             "لا تتلقى Xwavy أموالًا للاستثمارات، ولا تحتفظ بأموال، ولا تُصدر حصص ملكية أو تنقلها، ولا تُعدّ مذكرات شروط الاستثمار، ولا تقدم المشورة لأي من الطرفين بشأن ما إذا كانت صفقة ما جيدة. راجع إخلاء المسؤولية عن تقديم المشورة.",
           ],
         },
         {
+          title: "المنصة نفسها",
+          body: [
+            "منصة Xwavy، بما فيها تصميمها وشعارها والمحتوى الذي تنشئه Xwavy، محمية بموجب قوانين الملكية الفكرية. ولا يجوز نسخها أو إعادة إنتاجها دون إذن كتابي منا.",
+            "تُقدَّم Xwavy كما هي. ونعمل على إبقائها متاحة ودقيقة، لكننا لا نضمن أن تعمل دون انقطاع أو أخطاء، ولا نتبنى الأفكار أو الأرقام أو الادعاءات التي ينشرها الأعضاء ولا نتحقق منها.",
+            "في الحدود التي يسمح بها القانون، لا تتحمل Xwavy المسؤولية عن الخسائر غير المباشرة أو التبعية الناشئة عن استخدام المنصة، بما في ذلك خسارة الأرباح أو خسارة الاستثمار.",
+          ],
+        },
+        {
           title: "تعليق الحسابات والتعديلات",
           body: [
-            "يجوز لنا تعليق الحسابات التي تخالف هذه الشروط أو سياسة الاستخدام المقبول أو إغلاقها. ويجوز لنا تحديث هذه الشروط، وستُنشر النسخة السارية دائمًا على هذه الصفحة.",
+            "يجوز لنا تعليق الحسابات التي تخالف هذه الشروط أو سياسة الاستخدام المقبول أو إغلاقها، ويمكنك حذف حسابك في أي وقت من إعداداتك. ويجوز لنا تحديث هذه الشروط، وسننشر إشعارًا بالتغييرات الجوهرية على المنصة، وستُنشر النسخة السارية دائمًا على هذه الصفحة.",
           ],
         },
       ],
@@ -376,11 +436,25 @@ const ar: typeof en = {
           ],
         },
         {
+          title: "حماية المعلومات",
+          body: [
+            "نحمي معلوماتك بإجراءات أمنية متوافقة مع معايير القطاع، وتُحفظ بيانات التواصل مختومة. ولا توجد وسيلة لنقل البيانات أو تخزينها عبر الإنترنت آمنة تمامًا، لذا لا يمكننا ضمان أمان مطلق.",
+          ],
+        },
+        {
           title: "خياراتك",
           body: [
-            "يمكنك تعديل ملفك التعريفي وبيانات تواصلك، وتغيير تفضيلات الإشعارات، وإلغاء تفعيل حسابك أو حذفه من إعداداتك. ولأي طلب آخر يتعلق بالخصوصية، راسلنا على info@xwavy.com.",
+            "يمكنك تعديل ملفك التعريفي وبيانات تواصلك، وتغيير تفضيلات الإشعارات، وإلغاء تفعيل حسابك أو حذفه من إعداداتك. ويمكنك أيضًا أن تطلب منا الاطلاع على معلوماتك الشخصية أو تصحيحها أو حذفها، أو تقييد استخدامنا لها أو الاعتراض عليه، بمراسلتنا على info@xwavy.com.",
             "تُبنى Xwavy مع مراعاة متطلبات نظام حماية البيانات الشخصية السعودي (PDPL). وسيُستكمل الأساس النظامي لمعالجة البيانات وتفاصيل حقوقك بعد المراجعة القانونية.",
           ],
+        },
+        {
+          title: "الروابط إلى مواقع أخرى",
+          body: ["قد تتضمن المنصة روابط إلى مواقع أخرى. ولسنا مسؤولين عن ممارسات الخصوصية فيها، لذا يُرجى قراءة سياساتها."],
+        },
+        {
+          title: "التغييرات على هذه السياسة",
+          body: ["قد نحدّث هذه السياسة. وسننشر إشعارًا بالتغييرات الجوهرية على المنصة أو عبر البريد الإلكتروني، وستُنشر النسخة السارية دائمًا على هذه الصفحة."],
         },
       ],
     },
@@ -494,3 +568,13 @@ const ar: typeof en = {
 };
 
 export default { en, ar } satisfies PageCopy<typeof en>;
+
+/** Minutes to read a policy, counted from its text at about 200 words a minute. */
+export function readingMinutes(doc: { sections: readonly LegalSection[] }) {
+  const words = doc.sections
+    .flatMap((section) => [section.title, ...section.body, ...(section.points ?? [])])
+    .join(" ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
