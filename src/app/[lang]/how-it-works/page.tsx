@@ -36,7 +36,9 @@ export default async function HowItWorksPage() {
     <>
       <HowHero
         t={t.hero}
-        steps={home.process.steps.map((step) => step.name)}
+        steps={home.process.steps.map((step, i) => ({ name: step.name, status: home.process.statuses[i] ?? "" }))}
+        roles={{ innovator: home.consent.innovatorRole, investor: home.consent.investorRole }}
+        revealed={home.consent.revealed}
         imageAlt={alt.hiwHero}
         primaryHref={portalHref(locale, "signUpInnovator")}
         secondaryHref={localeHref(locale, "/for-investors")}
