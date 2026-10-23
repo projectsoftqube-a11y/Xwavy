@@ -27,37 +27,37 @@ export function navItems(locale: Locale, dict: Dictionary) {
 }
 
 /**
- * Floating dark pill header (house style). Fixed, so it floats over the
- * inset hero panel and the light page alike; the cyan logo needs a dark
- * ground to read well.
+ * Full-width night header: tinted glass over whatever scrolls beneath, a
+ * hairline along its foot, logo, the main links and the two portal actions.
+ * Fixed, so the cyan logo always sits on a dark ground.
  */
 export function SiteHeader({ locale, dict }: SiteHeaderProps) {
   const items = navItems(locale, dict);
 
   return (
-    <header className="z-header fixed inset-x-0 top-0 pt-[calc(var(--panel-inset)+0.5rem)]">
+    <header className="z-header fixed inset-x-0 top-0 border-b border-white/[0.07] bg-night/72 backdrop-blur-xl backdrop-saturate-150">
       <Container>
-        <div className="relative flex h-16 items-center justify-between gap-3 rounded-full border border-white/10 bg-abyss/95 ps-5 pe-2 shadow-elevated backdrop-blur-md sm:ps-6">
-          <Link href={localeHref(locale, "/")} className="shrink-0 rounded-full" aria-label={siteConfig.name}>
+        <div className="relative flex h-(--spacing-header) items-center justify-between gap-4">
+          <Link href={localeHref(locale, "/")} className="shrink-0 rounded-md" aria-label={siteConfig.name}>
             <Image
               src={siteConfig.logo.src}
               width={siteConfig.logo.width}
               height={siteConfig.logo.height}
               alt={siteConfig.logo.alt}
               priority
-              className="h-6 w-auto sm:h-7"
+              className="h-[1.375rem] w-auto sm:h-6"
             />
           </Link>
 
           <DesktopNav label={dict.common.nav.label} items={items} />
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             {/* Visibility is set on wrappers: the components carry their own display class. */}
-            <div className="hidden items-center gap-1 sm:flex">
+            <div className="hidden items-center gap-1.5 sm:flex">
               <LanguageSwitcher current={locale} label={dict.common.language} />
               <Link
                 href={portalHref(locale, "signIn")}
-                className="hidden min-h-10 items-center rounded-full px-4 text-sm whitespace-nowrap text-white transition-colors hover:bg-white/5 lg:inline-flex"
+                className="hidden min-h-10 items-center rounded-(--radius-control) px-2.5 text-base whitespace-nowrap text-fog transition-colors hover:bg-white/[0.05] lg:inline-flex"
               >
                 {dict.common.signIn}
               </Link>
@@ -80,7 +80,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
               }}
               signInHref={portalHref(locale, "signIn")}
               postIdeaHref={portalHref(locale, "signUpInnovator")}
-              browseHref={portalHref(locale, "browseIdeas")}
+              browseHref={localeHref(locale, "/ideas")}
               email={siteConfig.email}
             />
           </div>

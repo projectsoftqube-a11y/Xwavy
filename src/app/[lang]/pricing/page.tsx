@@ -11,7 +11,7 @@ import { pageCopy } from "@/i18n/page-copy";
 import accessCopy from "@/i18n/pages/access";
 import copy from "@/i18n/pages/pricing";
 import imagesCopy from "@/i18n/pages/images";
-import { portalHref } from "@/lib/href";
+import { localeHref, portalHref } from "@/lib/href";
 import { faqHelp } from "@/lib/faq-help";
 import { pageMetadata } from "@/lib/metadata";
 import { PlanCards } from "@/sections/pricing/PlanCards";
@@ -35,7 +35,7 @@ export default async function PricingPage() {
   const access = await pageCopy(accessCopy);
   const alt = await pageCopy(imagesCopy);
   const signUp = portalHref(locale, "signUpInnovator");
-  const browse = portalHref(locale, "browseIdeas");
+  const browse = localeHref(locale, "/ideas");
 
   return (
     <>
@@ -57,6 +57,7 @@ export default async function PricingPage() {
 
       <CompareTable
         id="pr-compare"
+        number="02"
         eyebrow={t.compare.eyebrow}
         titleLead={t.compare.titleLead}
         titleAccent={t.compare.titleAccent}
@@ -68,19 +69,22 @@ export default async function PricingPage() {
 
       <CardGrid
         id="pr-billing"
+        number="03"
         eyebrow={t.billing.eyebrow}
         titleLead={t.billing.titleLead}
         titleAccent={t.billing.titleAccent}
         columns={4}
         tone="surface"
         image={{ src: "/images/site/pr-billing.webp", alt: alt.prBilling }}
-        cards={t.billing.cards.map((card, i) => ({ ...card, Icon: BILLING_ICONS[i] }))}
+        cards={t.billing.cards.map((card, i) => ({
+          ...card,
+          Icon: BILLING_ICONS[i],
+        }))}
       />
 
-      <Statement eyebrow={t.band.eyebrow} parts={t.band.parts} tone="dark" background="/images/site/pr-band-bg.webp" />
+      <Statement eyebrow={t.band.eyebrow} parts={t.band.parts} tone="dark" background="/images/site/home-plans.webp" />
 
-      <FaqSection id="pr-faq" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} help={faqHelp(locale, dict)} />
-
+      <FaqSection id="pr-faq" number="04" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} help={faqHelp(locale, dict)} />
     </>
   );
 }

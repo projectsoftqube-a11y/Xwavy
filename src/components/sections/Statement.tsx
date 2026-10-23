@@ -13,49 +13,82 @@ type StatementProps = {
   eyebrow?: string;
   parts: readonly { text: string; accent?: boolean }[];
   footnote?: string;
+  /** Kept for compatibility: the band sits on night either way. */
   tone?: "light" | "dark";
-  /** Decorative photograph behind the statement, shown dimmed. */
+  /** Photograph behind the statement, dimmed. */
   background?: string;
 };
 
 /**
- * One large statement. As it scrolls through the viewport its words light up
- * in reading order (opacity only, scrubbed), with an oversized quote mark and
- * a hairline that draws beside it. Reduced motion shows it fully lit.
+ * One statement as a full-width cinematic band: a photograph behind it,
+ * dimmed and drifting slower than the page, a large quote mark, and the
+ * statement whose words light up in reading order as it scrolls through
+ * (opacity only, scrubbed). A footnote sits beside it as a glass card.
+ * Reduced motion shows it fully lit and still.
  */
-export function Statement({ eyebrow, parts, footnote, tone = "light", background }: StatementProps) {
+export function Statement({ eyebrow, parts, footnote, background }: StatementProps) {
   const root = useRef<HTMLElement>(null);
-  const dark = tone === "dark";
 
   useGSAP(
     () => {
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
       mm.add(MEDIA.motionOk, () => {
-        const split = SplitText.create(q("[data-statement]"), { type: "words" });
+        const statement = q("[data-statement]")[0];
+        const split = SplitText.create(statement, {
+          type: "words",
+          autoSplit: true,
+          onSplit: (self) =>
+            gsap.fromTo(
+              self.words,
+              { opacity: 0.15 },
+              {
+                opacity: 1,
+                ease: "none",
+                stagger: 0.1,
+                scrollTrigger: {
+                  trigger: statement,
+                  start: "top 85%",
+                  end: "bottom 50%",
+                  scrub: true,
+                },
+              },
+            ),
+        });
         gsap.fromTo(
-          split.words,
-          { opacity: 0.16 },
+          q("[data-statement-img]"),
+          { yPercent: -8 },
           {
-            opacity: 1,
+            yPercent: 8,
             ease: "none",
-            stagger: 0.1,
-            scrollTrigger: { trigger: q("[data-statement]")[0], start: "top 85%", end: "bottom 45%", scrub: true },
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
           },
         );
-        gsap.from(q("[data-statement-rule]"), {
-          scaleY: 0,
-          ease: "none",
-          scrollTrigger: { trigger: root.current, start: "top 80%", end: "bottom 50%", scrub: true },
+        gsap.from(q("[data-statement-mark]"), {
+          scale: 0.5,
+          autoAlpha: 0,
+          duration: 1.2,
+          ease: "back.out(1.6)",
+          scrollTrigger: {
+            trigger: root.current,
+            start: "top 75%",
+            once: true,
+          },
         });
+        // Not every statement has a footnote; GSAP warns on an empty target.
         const foot = q("[data-statement-foot]")[0];
         if (foot) {
           gsap.from(foot, {
-            y: 20,
+            y: 40,
             autoAlpha: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: { trigger: foot, start: "top 92%", once: true },
+            duration: 1.1,
+            ease: "expo.out",
+            scrollTrigger: { trigger: foot, start: "top 90%", once: true },
           });
         }
         return () => split.revert();
@@ -65,47 +98,44 @@ export function Statement({ eyebrow, parts, footnote, tone = "light", background
   );
 
   return (
-    <section ref={root} className={cn("panel relative py-section", dark ? "surface-abyss" : "bg-white")}>
+    <section ref={root} className="relative isolate overflow-hidden border-t border-hair bg-night py-[calc(var(--spacing-section)*1.4)]">
       {background ? (
-        <Image src={background} alt="" aria-hidden fill sizes="100vw" className={cn("object-cover", dark ? "opacity-25" : "opacity-20")} />
-      ) : null}
+        <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+          <Image data-statement-img src={background} alt="" fill sizes="100vw" className="scale-115 object-cover" />
+          <span className="absolute inset-0 bg-night/75" />
+          <span className="absolute inset-0 bg-linear-to-b from-night via-transparent to-night" />
+          <span className="grain absolute inset-0 opacity-[0.07] mix-blend-overlay" />
+        </div>
+      ) : (
+        <span aria-hidden className="glow-cyan pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[56rem] -translate-1/2 opacity-40" />
+      )}
+
       <Container className="relative">
-        <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-[auto_1fr] lg:gap-14">
-          <div className="flex items-start gap-5 lg:flex-col lg:items-center">
-            <span aria-hidden className={cn("font-heading text-[6rem] leading-[0.7] font-bold", dark ? "text-cyan" : "text-cyan-ink")}>
+        <div className={cn("grid grid-cols-1 gap-10 xl:gap-16", footnote && "xl:grid-cols-12 xl:items-end")}>
+          <div className={cn("flex flex-col gap-8", footnote ? "xl:col-span-8" : "mx-auto max-w-5xl items-center text-center")}>
+            <span aria-hidden data-statement-mark className="font-display text-[5rem] leading-[0.6] font-bold text-cyan">
               “
             </span>
-            <span aria-hidden data-statement-rule className={cn("hidden w-px flex-1 origin-top lg:block", dark ? "bg-white/15" : "bg-line")} />
+            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+            <p data-statement className="font-display text-[clamp(1.875rem,1.2rem+2.6vw,3.5rem)] leading-[1.15] font-medium text-fog">
+              {parts.map((part, i) =>
+                part.accent ? (
+                  <span key={i} className="text-cyan">
+                    {part.text}
+                  </span>
+                ) : (
+                  <span key={i}>{part.text}</span>
+                ),
+              )}
+            </p>
           </div>
-          {/* The statement fills the row; a footnote sits beside it from xl (at lg its column is too narrow for an email address), so the right side is never left empty. */}
-          <div className="grid grid-cols-1 gap-8 xl:grid-cols-12 xl:gap-12">
-            <div className={cn("flex flex-col justify-end gap-7", footnote ? "xl:col-span-8" : "xl:col-span-12")}>
-              {eyebrow ? <Eyebrow tone={dark ? "dark" : "light"}>{eyebrow}</Eyebrow> : null}
-              <p data-statement className={cn("text-[clamp(1.625rem,1.05rem+2.4vw,3.25rem)] font-heading leading-[1.2] font-semibold tracking-tight text-pretty", dark ? "text-white" : "text-ink")}>
-                {parts.map((part, i) =>
-                  part.accent ? (
-                    <span key={i} className={cn("accent", dark ? "text-cyan" : "text-cyan-ink")}>
-                      {part.text}
-                    </span>
-                  ) : (
-                    <span key={i}>{part.text}</span>
-                  ),
-                )}
-              </p>
+          {footnote ? (
+            <div data-statement-foot className="relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-white/15 bg-night/60 p-7 backdrop-blur-xl xl:col-span-4">
+              <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-cyan to-transparent" />
+              <Image src="/brand/xwavy-mark.png" alt="" aria-hidden width={44} height={44} className="size-11 rounded-xl ring-1 ring-white/15" />
+              <p className="text-lead leading-relaxed text-fog/90">{footnote}</p>
             </div>
-            {footnote ? (
-              <div
-                data-statement-foot
-                className={cn(
-                  "flex flex-col gap-6 rounded-3xl border-t-2 p-6 xl:col-span-4 xl:self-end",
-                  dark ? "border-cyan bg-white/5 backdrop-blur-sm" : "border-cyan-ink bg-surface",
-                )}
-              >
-                <Image src="/brand/xwavy-mark.png" alt="" aria-hidden width={40} height={40} className={cn("size-10 rounded-xl", dark && "ring-1 ring-white/15")} />
-                <p className={cn("font-heading text-[clamp(1.125rem,0.95rem+0.7vw,1.625rem)] leading-snug font-medium tracking-tight", dark ? "text-white" : "text-ink")}>{footnote}</p>
-              </div>
-            ) : null}
-          </div>
+          ) : null}
         </div>
       </Container>
     </section>

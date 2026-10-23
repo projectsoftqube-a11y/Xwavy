@@ -29,7 +29,7 @@ All are read at build time: set them on the host, then rebuild.
 | Variable                        | Purpose                                                                                                                                       |
 | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `SITE_URL`                      | This site's origin. Defaults to `https://www.xwavy.com`. Used for canonical/hreflang URLs, `sitemap.xml`, `robots.txt` and the social images. |
-| `PORTAL_URL`                    | The portal's origin (sign in, sign up, idea directory), e.g. `https://app.xwavy.com`. **Required before this site goes live on xwavy.com.**   |
+| `PORTAL_URL`                    | The portal's origin (sign in, sign up), e.g. `https://app.xwavy.com`. **Required before this site goes live on xwavy.com.**   |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Optional Google Analytics 4 ID (`G-…`). Unset: no analytics and no cookie banner. Set: GA loads only after the visitor accepts.               |
 
 `PORTAL_URL` falls back to the current xwavy.com, which is the right target
@@ -37,7 +37,7 @@ while that platform is live and this site runs elsewhere. Once this site
 replaces xwavy.com, the fallback would point the site at itself: the proxy
 then skips its portal redirects (no loop), but every Sign in / Post your idea
 button would lead back here. The portal's page paths (`/login`,
-`/submit-idea`, `/ideas`) are in `src/config/site.ts`; change them there if the
+`/submit-idea`) are in `src/config/site.ts`; change them there if the
 new portal names them differently.
 
 Old xwavy.com URLs are handled in `src/proxy.ts`: `/login`, `/signin`,
@@ -77,6 +77,7 @@ URLs (`/en/terms` …) and the old sign-in/sign-up paths are redirects in
 src/
   app/[lang]/        root layout (fonts, metadata, providers, header/footer) and pages
   app/globals.css    design tokens and base styles
+  app/responsive.css the breakpoint ladder (1920 → 320) and site-container widths
   app/*.png|ico      favicon, app icon and Apple touch icon (Next file conventions)
   app/robots.ts, app/sitemap.ts   robots.txt and sitemap.xml (every page, both languages)
   app/[lang]/[...rest]   unknown URLs → localized 404
@@ -84,59 +85,59 @@ src/
   i18n/              locale config, dictionaries (en, ar), per-page copy (pages/)
   components/
     analytics/       GA4 behind a consent banner (off unless NEXT_PUBLIC_GA_MEASUREMENT_ID)
-    animation/       SmoothScrollProvider (Lenis), MotionProvider, Reveal
-    layout/          Container (1520px cap, 90% from 1600px), Section, SiteFooter
-    navigation/      SiteHeader, MobileMenu, LanguageSwitcher
-    sections/        shared page sections: PageHero, CardGrid, StepRow,
-                     SplitFeature, CompareTable, DetailTable, Statement,
-                     FaqSection, CtaPanel
-    ui/              Button, Eyebrow, SectionHeading
-  sections/          page-specific sections (home, pricing, contact, legal)
+    animation/       SmoothScrollProvider (Lenis), MotionProvider, Reveal, CinemaHeading,
+                     CardStage, ScrollProgress, useAutoCycle + CycleToggle (tabs that play)
+    layout/          Container (site-container), FooterFinale, SiteFooter, FooterExtras
+    navigation/      SiteHeader, DesktopNav, MobileMenu, LanguageSwitcher
+    sections/        shared page sections: PageHero, CardGrid, SplitFeature,
+                     CompareTable, Statement, StepStory, FaqSection
+    ui/              Button, Eyebrow
+  sections/          page-specific sections (home, how-it-works, for-innovators,
+                     pricing, ideas, contact, legal, not-found)
   config/site.ts     name, email, logo, site and portal URLs
   lib/               gsap (single import point), motion constants, href and
                      metadata helpers, cn
 public/
   og/                social share cards (1200×630), one per language
   brand/             logo
-  images/people/     all photography (male Emirati cast)
-docs/
-  client/            Scope of Work (original .docx and text) and clarifications letter
-  image-brief.md     prompts and placement for every photograph (v2)
+  images/site/       page photography; images/people/ one portrait
 ```
 
 ## Design system
 
-- **Colours (solid only, no gradients):** abyss/navy dark surfaces, wave cyan
-  (matches the logo, innovator actions) and capital gold (investor actions).
-  Use `cyan-ink` / `gold-ink` for text on light backgrounds.
-- **Type:** Kalam headings (accent words in the same face, set apart by
-  colour), Google Sans for descriptions, body and UI text, Geist Mono labels.
-  Arabic falls through to Alexandria (headings) and IBM Plex Sans Arabic
-  (text) automatically.
-- **House style:** soft tinted page, sections as inset rounded panels
-  (`.panel`, with a gap between neighbours), eyebrows with a leading rule
-  (`Eyebrow`), pill buttons with an arrow chip (`<Button arrow>`), floating
-  dark header.
-- **Container:** content max 1520px (90% of the width from 1600px) with fluid 16–64px gutters.
+- **Theme:** near-black "night" throughout (`night`, `night-1`…`night-3`,
+  `hair` lines, `fog` / `haze` / `dim` text). Cyan, the logo's wave, marks
+  innovators and the main actions; gold marks investors; `danger` is for form
+  errors only.
+- **Type:** Oswald for titles, labels and figures (display sizes in
+  capitals, accent words light in a brand colour); Poppins for body and UI.
+  Arabic falls through to Cairo (titles) and IBM Plex Sans Arabic (text).
+  No text below 16px or above 80px.
+- **House style:** full-bleed cinematic heroes, numbered section headings
+  (`CinemaHeading` with `Eyebrow`), glass cards with a pointer light
+  (`CardStage`, `CARD_LIGHT`), outlined numbers (`stroke-text-*`), a light
+  circling feature borders (`border-glow`), pill buttons whose arrow chip
+  slides on hover (`<Button arrow>`, nothing moves).
+- **Layout:** `site-container` is 1620px from 1600px screens, 1420px below
+  1600px and 90% below 1500px (responsive.css); section padding 100px desktop,
+  80px tablet, 60px mobile (`py-section`).
 
 ## Animation
 
-Simple and calm by design: entrances only, plus a gentle photo drift.
-
-- `Reveal` (scroll-triggered, once): `stagger` for lists and grids,
-  `variant="image"` for photos (soft wipe, settle, slight drift).
-  `SectionHeading` animates itself.
-- Heroes animate on load; elements marked `data-intro` are hidden by CSS
-  before hydration (no flash) with a 2.5s safety fallback.
+- Headings rise line by line; heroes reveal on load (`data-intro` content is
+  hidden by CSS before hydration, with a 2.5s fallback).
+- Tab sets play one by one (`useAutoCycle`): only on screen, pausable
+  (`CycleToggle`), held by keyboard focus, off with reduced motion.
 - Transform, opacity and clip only. GSAP owns scroll animation; Framer Motion
-  owns local UI state (menu, accordion). Import from `@/lib/gsap`, animate in
-  `useGSAP({ scope })` and gate with `gsap.matchMedia()` + `MEDIA.motionOk`.
+  owns local UI state (menu, tabs, accordion). Import from `@/lib/gsap`,
+  animate in `useGSAP({ scope })` and gate with `gsap.matchMedia()` +
+  `MEDIA.motionOk`.
 - Lenis runs on the GSAP ticker; `useLenis()` to stop/start (the mobile menu does).
 - Reduced motion: no animation, native-feel scrolling.
 
 ## Content rules
 
-- Copy comes from the client documents in `docs/client/`. The old xwavy.com
+- Copy comes from the client documents (Scope of Work and clarifications). The old xwavy.com
   content is dummy data (clarifications §6.1): no figures, people,
   testimonials or listings from it.
 - Do not invent statistics, prices, testimonials, team members or category

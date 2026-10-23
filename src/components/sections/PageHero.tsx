@@ -7,8 +7,8 @@ import { useRef } from "react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { EASE, MEDIA } from "@/lib/motion";
+import { gsap, SplitText, useGSAP } from "@/lib/gsap";
+import { MEDIA } from "@/lib/motion";
 
 export type HeroAction = {
   label: string;
@@ -30,45 +30,129 @@ type PageHeroProps = {
 };
 
 /**
- * Inner-page hero: dark inset panel, copy on one side and a photograph on the
- * other. Copy rises in and the photo opens with a soft wipe on load; the
- * photo then drifts slightly as the hero scrolls away.
+ * Inner-page hero, cinematic and split: the copy on night on the start side,
+ * the photograph running the hero's full height to the end edge of the
+ * screen and fading into the night. On phones and tablets the photograph
+ * sits behind the copy, dimmed toward the foot.
  *
- * Elements marked [data-intro] are hidden before hydration by globals.css (no
- * flash) and revealed here; reduced motion shows everything at once.
+ * Load, once the photograph has decoded: a curtain draws back from it while
+ * it settles from a slight zoom, the label's rule draws, the title rises
+ * letter by letter (word by word in Arabic), then the rest. Transform and
+ * opacity only. Scroll: the photograph sinks slower than the page and the
+ * copy lifts away. The curtain and [data-intro] copy are set before hydration
+ * by globals.css, so nothing flashes; reduced motion shows everything still.
  */
 export function PageHero({ id, eyebrow, titleLead, titleAccent, body, actions = [], image, points }: PageHeroProps) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
-    () => {
+    (_context, contextSafe) => {
       const q = gsap.utils.selector(root);
-      gsap.set(q("[data-intro]"), { autoAlpha: 1 });
       const mm = gsap.matchMedia();
+      mm.add(MEDIA.reducedMotion, () => {
+        gsap.set(q("[data-intro]"), { autoAlpha: 1 });
+      });
       mm.add(MEDIA.motionOk, () => {
-        gsap.from(q("[data-hero-fade]"), { y: 36, autoAlpha: 0, duration: 0.9, ease: EASE.gsapOut, stagger: 0.09, delay: 0.1 });
-        gsap.from(q("[data-hero-media]"), { clipPath: "inset(12% 8% 12% 8%)", duration: 1.3, ease: "power3.out", delay: 0.15, clearProps: "clipPath" });
-        gsap.fromTo(q("[data-hero-media] img"), { scale: 1.25 }, { scale: 1.12, duration: 1.6, ease: "power3.out", delay: 0.15 });
-        // Gentle drift as the hero scrolls away.
-        gsap.to(q("[data-hero-media] img"), {
-          yPercent: 4,
-          ease: "none",
-          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
-        });
+        const arabic = document.documentElement.lang === "ar";
+        const rtl = document.documentElement.dir === "rtl";
+        const img = q("[data-hero-img]")[0] as HTMLImageElement | undefined;
+        gsap.set(q("[data-hero-img]"), { scale: 1.15, force3D: true });
+        const decoded = img && !img.complete ? img.decode().catch(() => undefined) : Promise.resolve();
+        const ready = Promise.race([decoded, new Promise((resolve) => setTimeout(resolve, 1500))]);
+
+        let split: SplitText | undefined;
+        void ready.then(
+          contextSafe?.(() => {
+            gsap.set(q("[data-intro]"), { autoAlpha: 1 });
+            gsap
+              .timeline({ defaults: { ease: "expo.out" } })
+              // The curtain retracts toward the outer edge of the screen.
+              .to(
+                q("[data-letterbox='curtain']"),
+                {
+                  xPercent: rtl ? -100 : 100,
+                  duration: 1.5,
+                  ease: "expo.inOut",
+                },
+                0,
+              )
+              .to(q("[data-hero-img]"), { scale: 1, duration: 2.6, ease: "power3.out" }, 0)
+              .from(q("[data-hero-rule]"), { scaleX: 0, duration: 1.1 }, 0.5)
+              .from(q("[data-hero-eyebrow]"), { x: rtl ? 16 : -16, autoAlpha: 0, duration: 1 }, 0.55)
+              .from(q("[data-hero-fade]"), { y: 28, autoAlpha: 0, duration: 1.1, stagger: 0.1 }, 0.9);
+
+            split = SplitText.create(q("[data-hero-title]"), {
+              type: arabic ? "lines,words" : "lines,chars",
+              mask: "lines",
+              autoSplit: true,
+              onSplit: (self) =>
+                gsap.from(arabic ? self.words : self.chars, {
+                  yPercent: 120,
+                  duration: 1.2,
+                  ease: "expo.out",
+                  stagger: arabic ? 0.07 : 0.02,
+                  delay: 0.6,
+                }),
+            });
+
+            const leave = {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            };
+            gsap.to(q("[data-hero-img]"), {
+              yPercent: 12,
+              ease: "none",
+              scrollTrigger: leave,
+            });
+            gsap.fromTo(
+              q("[data-hero-copy]"),
+              { y: 0, autoAlpha: 1 },
+              {
+                y: -80,
+                autoAlpha: 0.2,
+                ease: "none",
+                immediateRender: false,
+                scrollTrigger: leave,
+              },
+            );
+          }),
+        );
+        return () => split?.revert();
       });
     },
     { scope: root },
   );
 
   return (
-    <section ref={root} aria-labelledby={id} className="surface-abyss bg-grid panel relative mt-(--panel-inset)">
-      <Container className="grid grid-cols-1 gap-10 pt-[calc(var(--panel-inset)+6.5rem)] pb-section-sm lg:grid-cols-12 lg:gap-14 lg:pt-[calc(var(--panel-inset)+7.5rem)] lg:pb-14">
-        <div data-intro className="flex flex-col justify-center gap-6 lg:col-span-7">
-          <p data-hero-fade className="inline-flex w-fit items-center gap-2.5 rounded-full border border-white/12 bg-white/5 py-1 ps-1 pe-3.5 font-mono text-eyebrow text-mist uppercase">
-            <Image src="/brand/xwavy-mark.png" alt="" aria-hidden width={24} height={24} className="size-6 shrink-0 rounded-[0.4rem] ring-1 ring-white/15" />
+    <section ref={root} aria-labelledby={id} className="relative isolate overflow-hidden bg-night">
+      {/* The photograph: behind the copy on phones and tablets, the end half from lg. */}
+      <div className="absolute inset-0 -z-10 overflow-hidden lg:inset-s-auto lg:w-[54%]">
+        <Image
+          data-hero-img
+          src={image.src}
+          alt={image.alt}
+          fill
+          priority
+          sizes="(min-width: 1024px) 54vw, 100vw"
+          className={cn("object-cover will-change-transform", image.position ?? "object-center")}
+        />
+        <span aria-hidden className="absolute inset-0 bg-linear-to-t from-night via-night/75 to-night/40 lg:hidden" />
+        <span aria-hidden className="absolute inset-0 hidden bg-linear-to-r from-night via-night/20 to-transparent lg:block rtl:bg-linear-to-l" />
+        <span aria-hidden className="absolute inset-x-0 bottom-0 hidden h-1/3 bg-linear-to-t from-night to-transparent lg:block" />
+        <span aria-hidden className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-night/70 to-transparent" />
+        {/* Curtain: draws back on load. Shown only before the intro (globals.css). */}
+        <span aria-hidden data-letterbox="curtain" className="absolute inset-0 bg-night will-change-transform" />
+      </div>
+
+      <Container className="relative flex min-h-[92svh] flex-col justify-end pt-[calc(var(--spacing-header)+5rem)] pb-14 lg:min-h-[88svh] lg:justify-center lg:pb-20">
+        <div data-intro data-hero-copy className="flex flex-col gap-7 lg:w-[50%] lg:pe-8">
+          <p data-hero-eyebrow className="flex items-center gap-3 font-display text-base tracking-[0.2em] text-cyan uppercase">
+            <span aria-hidden data-hero-rule className="h-px w-10 shrink-0 origin-left bg-cyan rtl:origin-right" />
             {eyebrow}
           </p>
-          <h1 id={id} data-hero-fade className="max-w-[18ch] text-display text-white">
+          <h1 id={id} data-hero-title className="max-w-[16ch] text-display text-fog drop-shadow-[0_4px_30px_rgb(0_0_0/0.5)]">
             {titleLead}
             {titleAccent ? (
               <>
@@ -77,13 +161,13 @@ export function PageHero({ id, eyebrow, titleLead, titleAccent, body, actions = 
               </>
             ) : null}
           </h1>
-          <p data-hero-fade className="max-w-xl text-lead text-mist">
+          <p data-hero-fade className="max-w-xl text-lead text-fog/80">
             {body}
           </p>
           {points?.length ? (
-            <ul data-hero-fade className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-6">
+            <ul data-hero-fade className="flex flex-col gap-2.5 border-t border-white/15 pt-6 sm:flex-row sm:flex-wrap sm:gap-x-7">
               {points.map((point) => (
-                <li key={point} className="flex items-center gap-2 text-sm text-mist">
+                <li key={point} className="flex items-center gap-2.5 text-base text-fog/80">
                   <Check aria-hidden className="size-4 shrink-0 text-cyan" />
                   {point}
                 </li>
@@ -91,25 +175,14 @@ export function PageHero({ id, eyebrow, titleLead, titleAccent, body, actions = 
             </ul>
           ) : null}
           {actions.length ? (
-            <div data-hero-fade className="mt-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div data-hero-fade className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               {actions.map((action) => (
-                <Button key={action.label} href={action.href} size="lg" variant={action.variant ?? "primary"} arrow={action.variant !== "outline-inverse"}>
+                <Button key={action.label} href={action.href} size="lg" variant={action.variant ?? "primary"} arrow className="w-full sm:w-auto">
                   {action.label}
                 </Button>
               ))}
             </div>
           ) : null}
-        </div>
-
-        <div data-intro data-hero-media className="relative aspect-4/3 overflow-hidden rounded-3xl bg-navy lg:col-span-5 lg:aspect-auto lg:min-h-[28rem]">
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            priority
-            sizes="(min-width: 1024px) 40vw, 100vw"
-            className={cn("object-cover", image.position ?? "object-center")}
-          />
         </div>
       </Container>
     </section>

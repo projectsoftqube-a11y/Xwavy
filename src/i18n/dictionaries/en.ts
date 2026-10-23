@@ -68,6 +68,8 @@ const en = {
     openMenu: "Open menu",
     closeMenu: "Close menu",
     language: "Language",
+    /** Pause / play for every tab set that advances on its own (WCAG 2.2.2). */
+    autoplay: { play: "Play the sequence", pause: "Pause the sequence" },
     /** Card beside every FAQ. No response-time promise. */
     faqHelp: {
       title: "Still have a question?",
@@ -121,6 +123,8 @@ const en = {
     rights: "All rights reserved.",
     poweredBy: "Powered by Wavy Solutions",
     backToTop: "Back to top",
+    /** Followed by the studio's name (siteConfig.credit), linked. */
+    credit: "Designed & developed by",
   },
 
   home: {

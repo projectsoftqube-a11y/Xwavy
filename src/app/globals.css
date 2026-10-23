@@ -2,19 +2,17 @@
 @import "lenis/dist/lenis.css";
 
 /* ==========================================================================
-   Xwavy design system — "Deep Current" (Tailwind v4, CSS-first)
+   Xwavy design system — "Night" (Tailwind v4, CSS-first)
 
    Everything in @theme becomes both a CSS variable and a utility class,
-   e.g. --color-navy → bg-navy / text-navy, --text-h2 → text-h2,
-   --spacing-section → py-section, --container-site → max-w-site.
+   e.g. --color-night → bg-night / text-night, --text-h2 → text-h2,
+   --spacing-section → py-section. The site container is `site-container`
+   (widths per breakpoint in responsive.css).
 
-   Story: cyan is the wave (ideas in motion, matched to the logo), gold is
-   capital (investment), deep ocean navy carries the drama.
-
-   House style (shared with the SuperMIA / Kavion sites): a soft tinted page,
-   dark sections as inset rounded panels, eyebrows with a leading rule, and
-   two-tone headlines whose accent is typographic (serif italic), never a
-   gradient. Colours are always solid.
+   Story: bold and cinematic on near-black. Cyan (the logo's wave) marks
+   innovators and the main actions; gold marks investors. Titles, labels and
+   figures are set in Oswald, display sizes in capitals; the interface and
+   body in Poppins.
    ========================================================================== */
 
 @theme {
@@ -23,107 +21,95 @@
      Contrast ratios are against the surface each token is meant for. */
   --color-*: initial;
 
-  /* Dark surfaces */
-  --color-abyss: #050a17; /* deepest: hero, footer */
-  --color-navy: #0b1428; /* dark feature sections */
-  --color-navy-raised: #121e38; /* cards on navy */
-  --color-navy-line: #22304d; /* hairlines on navy (decorative only) */
-  --color-mist: #9aa8c1; /* secondary text on dark (7.6:1 on navy) */
+  /* Night: the near-black system (private-bank calm, product-grade UI).
+     Text contrast on night: fog 18:1, haze 8.7:1, dim 5.2:1. */
+  --color-night: #060709; /* page */
+  --color-night-1: #0b0d11; /* raised band, panels */
+  --color-night-2: #111419; /* cards, product UI */
+  --color-night-3: #181c23; /* hover, inner wells */
+  --color-hair: #1d2129; /* hairlines (decorative) */
+  --color-hair-strong: #2b303a; /* borders on cards and controls */
+  --color-fog: #f2f3f5; /* primary text on night */
+  --color-haze: #a4abb8; /* secondary text */
+  --color-dim: #7c8494; /* tertiary text, labels */
 
   /* Accents */
-  --color-cyan: #00e1ea; /* the wave: fills with abyss text (12.2:1), text on dark */
-  --color-cyan-ink: #00737b; /* cyan text, icons and focus on light (5.6:1 on white) */
-  --color-gold: #ffb547; /* capital: fills with abyss text (11.3:1), text on dark */
-  --color-gold-ink: #8a5300; /* gold text on light (6.3:1 on white) */
+  --color-cyan: #00e1ea; /* the wave: fills with night text (13:1), text on night */
+  --color-gold: #ffb547; /* capital: fills with night text (12:1), text on night */
+  --color-danger: #ff6b6b; /* form errors on night (6.9:1 on night-1) */
 
-  /* Light surfaces and text */
+  /* White, for translucent tints on night (bg-white/10, border-white/15). */
   --color-white: #ffffff;
-  --color-surface: #f4f7fb; /* alternate light sections */
-  --color-line: #e3e9f2; /* hairlines and card borders (decorative) */
-  --color-field: #7a869c; /* form control borders (3.7:1, meets 1.4.11) */
-  --color-ink: #0b1220; /* headings (18.7:1) */
-  --color-body: #3a4560; /* body text (9.6:1) */
-  --color-muted: #5f6b84; /* secondary text (5.4:1 on white, 5:1 on surface) */
 
   /* --- Typography -------------------------------------------------------
-     Sora: confident geometric heading face; accent words share it, set
-     apart by colour and a lighter weight. Google Sans: descriptions, body
-     and UI text. Geist Mono: figures and labels.
-     Arabic glyphs fall through to Alexandria (headings) and IBM Plex Sans
-     Arabic (text); browsers pick them per character, so no locale switch. */
-  --font-heading: var(--font-sora), var(--font-alexandria), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-google-sans), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), var(--font-plex-arabic), ui-monospace, "SFMono-Regular", monospace;
-  /* Accent words and the quote mark use the heading face, set apart by colour. */
-  --font-serif: var(--font-heading);
+     Oswald: titles, labels and figures. Display sizes (hero, display, h2,
+     stats) are set in capitals and heavy. Accent words drop to a light
+     weight in a brand colour. Poppins: interface and body. Arabic glyphs fall
+     through to Cairo (titles) and IBM Plex Sans Arabic (text); browsers pick
+     them per character. */
+  --font-display: var(--font-oswald), var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-oswald), var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
 
-  /* Fluid type: minimum at 320px, maximum from ~1280px upward. */
-  --text-display: clamp(2.375rem, 1.2rem + 4.6vw, 4.75rem); /* 38 → 76px */
-  --text-display--line-height: 1.06;
-  --text-display--letter-spacing: -0.035em;
-  --text-display--font-weight: 700;
-
-  /* Hero headline only: one size above display. */
-  --text-hero: clamp(2.625rem, 1.3rem + 5.6vw, 6.25rem); /* 42 → 100px */
-  --text-hero--line-height: 1.02;
-  --text-hero--letter-spacing: -0.045em;
+  /* Fluid type: minimum at 320px, maximum from ~1280px upward.
+     Client rule: no text anywhere below 16px or above 80px. Use text-base as
+     the smallest size; text-xs and text-sm are not used. */
+  --text-hero: clamp(2.5rem, 1.5rem + 4.4vw, 5rem); /* 40 → 80px: the hero headline, the largest text on the site */
+  --text-hero--line-height: 0.95;
+  --text-hero--letter-spacing: -0.005em;
   --text-hero--font-weight: 700;
 
-  --text-h2: clamp(1.875rem, 1.2rem + 2.7vw, 3.375rem); /* 30 → 54px */
-  --text-h2--line-height: 1.1;
-  --text-h2--letter-spacing: -0.03em;
-  --text-h2--font-weight: 680;
+  --text-display: clamp(2.25rem, 1.35rem + 4vw, 4.5rem); /* 36 → 72px */
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: 0;
+  --text-display--font-weight: 600;
 
-  --text-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem); /* 20 → 26px */
-  --text-h3--line-height: 1.22;
-  --text-h3--letter-spacing: -0.02em;
-  --text-h3--font-weight: 640;
+  --text-h2: clamp(2rem, 1.25rem + 3.4vw, 3.75rem); /* 32 → 60px */
+  --text-h2--line-height: 1;
+  --text-h2--letter-spacing: 0;
+  --text-h2--font-weight: 600;
 
-  --text-h4: 1.125rem; /* 18px */
-  --text-h4--line-height: 1.35;
-  --text-h4--letter-spacing: -0.01em;
-  --text-h4--font-weight: 620;
+  --text-h3: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem); /* 22 → 30px */
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: 0.005em;
+  --text-h3--font-weight: 500;
 
-  --text-stat: clamp(2.25rem, 1.8rem + 1.8vw, 3.5rem); /* 36 → 56px */
+  --text-stat: clamp(2.5rem, 1.6rem + 3.6vw, 5rem); /* 40 → 80px */
   --text-stat--line-height: 1;
-  --text-stat--letter-spacing: -0.04em;
+  --text-stat--letter-spacing: 0;
   --text-stat--font-weight: 700;
 
-  --text-lead: clamp(1.0625rem, 0.98rem + 0.4vw, 1.25rem); /* 17 → 20px */
-  --text-lead--line-height: 1.6;
-
-  /* Mono labels: eyebrows, step numbers, ticket sizes. */
-  --text-eyebrow: 0.75rem; /* 12px */
-  --text-eyebrow--line-height: 1.4;
-  --text-eyebrow--letter-spacing: 0.14em;
-  --text-eyebrow--font-weight: 500;
+  --text-lead: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem); /* 16 → 19px */
+  --text-lead--line-height: 1.7;
 
   /* --- Spacing ----------------------------------------------------------
      Tailwind's 0.25rem scale stays; these add named fluid steps. */
-  --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 4rem); /* 16px @320 → 64px */
-  --spacing-section: clamp(3.5rem, 2.75rem + 3.5vw, 6rem); /* 56 → 96px */
-  --spacing-section-sm: clamp(2.5rem, 2rem + 2vw, 4rem); /* 40 → 64px */
+  /* Section padding (top and bottom): 60px on phones, 80px on tablets, 100px from
+     1024px (set in the media queries below). */
+  --spacing-section: 3.75rem;
+  --spacing-section-sm: var(--spacing-section); /* same steps: every section is spaced alike */
   --spacing-header: 4.5rem; /* 72px fixed navigation */
 
-  /* --- Containers ------------------------------------------------------- */
-  --container-site: 95rem; /* 1520px: every section's content limit (90% from 1600px, below) */
-  /* Reading width: use Tailwind's built-in max-w-prose (65ch). */
+  /* --- Containers ------------------------------------------------------
+     Site container: see `site-container` below and responsive.css.
+     Reading width: use Tailwind's built-in max-w-prose (65ch). */
 
   /* --- Radii ------------------------------------------------------------
-     Buttons and chips are pills (rounded-full); these cover everything else. */
+     Buttons are softly squared (radius-control), not pills; chips stay round. */
+  --radius-control: 0.625rem; /* 10px — buttons, inputs */
   --radius-md: 0.75rem; /* 12px — inputs, small cards */
   --radius-xl: 1.5rem; /* 24px — feature panels, media */
 
-  /* --- Shadows (ocean-tinted, never pure black) ------------------------- */
-  --shadow-card: 0 1px 2px rgb(11 20 40 / 0.04), 0 8px 24px -8px rgb(11 20 40 / 0.1);
-  --shadow-elevated: 0 32px 80px -24px rgb(11 20 40 / 0.35);
+  /* --- Shadows ----------------------------------------------------------
+     Night: a lifted panel reads by its top highlight and a deep, soft drop. */
+  --shadow-night: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 40px 80px -32px rgb(0 0 0 / 0.8);
 
   /* --- Motion ----------------------------------------------------------- */
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
-  /* Inset panels: gap to the viewport edge and corner radius. */
+  /* Inset panels (footer finale, cookie banner, menu): gap to the viewport edge and corner radius. */
   --panel-inset: clamp(0.5rem, 0.25rem + 0.8vw, 1rem);
   --panel-radius: clamp(1.25rem, 0.9rem + 1.4vw, 2.25rem);
 
@@ -136,10 +122,10 @@
   --z-header: 40;
   --z-skip-link: 100;
 
-  /* Focus ring for light surfaces; dark surface utilities swap it to cyan. */
-  --focus-ring: var(--color-cyan-ink);
+  /* Focus ring: cyan on night. */
+  --focus-ring: var(--color-cyan);
 
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 /* ==========================================================================
@@ -153,17 +139,77 @@
   z-index: var(--z-skip-link);
 }
 
-/* Dark surfaces. They set the background, default text and focus ring; text
-   colors inside are applied explicitly by components via their `tone` prop. */
-@utility surface-navy {
+/* The night surface: background, default text and focus ring. */
+@utility surface-night {
   --focus-ring: var(--color-cyan);
-  background-color: var(--color-navy);
-  color: var(--color-mist);
+  background-color: var(--color-night);
+  color: var(--color-haze);
 }
-@utility surface-abyss {
-  --focus-ring: var(--color-cyan);
-  background-color: var(--color-abyss);
-  color: var(--color-mist);
+
+/* A product-UI panel on night: raised surface, hairline border, top
+   highlight and deep shadow. Radius is set where it's used. */
+@utility panel-night {
+  background-color: var(--color-night-2);
+  border: 1px solid var(--color-hair-strong);
+  box-shadow: var(--shadow-night);
+}
+
+/* The site container: a fixed width per breakpoint (responsive.css), centred,
+   with no padding of its own. Never wider than the screen less 16px a side. */
+@utility site-container {
+  width: min(var(--site-container, 90%), 100% - 2rem);
+  margin-inline: auto;
+}
+
+/* Film grain over photography: fractal noise, blended at low opacity by the
+   component (e.g. opacity-[0.08] mix-blend-overlay). Decorative. */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* Outlined display type: transparent fill and a hairline stroke in a theme
+   colour, e.g. stroke-text-fog, stroke-text-cyan, stroke-text-hair-strong. */
+@utility stroke-text-* {
+  color: transparent;
+  -webkit-text-stroke: 1.5px --value(--color-*);
+}
+
+/* A slowly circling light along a card's border: two arcs, gold and cyan,
+   travelling round a conic gradient. Set the card's fill with --card-fill. */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes border-spin {
+  to {
+    --border-angle: 360deg;
+  }
+}
+@utility border-glow {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--card-fill, var(--color-night-2)), var(--card-fill, var(--color-night-2))) padding-box,
+    conic-gradient(
+        from var(--border-angle),
+        var(--color-hair-strong) 0%,
+        var(--color-gold) 12%,
+        var(--color-hair-strong) 26%,
+        var(--color-hair-strong) 50%,
+        var(--color-cyan) 62%,
+        var(--color-hair-strong) 76%
+      )
+      border-box;
+  animation: border-spin 7s linear infinite;
+}
+
+/* Soft light pools behind hero and closing sections. Decorative. */
+@utility glow-cyan {
+  background-image: radial-gradient(closest-side, rgb(0 225 234 / 0.16), transparent);
+}
+@utility glow-gold {
+  background-image: radial-gradient(closest-side, rgb(255 181 71 / 0.12), transparent);
 }
 
 /* Fine architectural grid for dark hero panels: hairlines, not a colour
@@ -176,40 +222,47 @@
   background-position: center top;
 }
 
-/* Endless horizontal ticker. The track holds the list twice; moving it by
-   half its width loops seamlessly. Stopped by the reduced-motion rule below. */
-@keyframes marquee {
+/* Swapped text arriving: a short rise and fade (e.g. the billing-period switch). */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* A light travelling down a hairline: the hero's scroll cue. */
+@keyframes scroll-cue {
+  from {
+    transform: translateY(-100%);
+  }
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translateY(300%);
   }
 }
-@utility animate-marquee {
-  animation: marquee var(--marquee-duration, 40s) linear infinite;
-}
 
-/* Inset rounded panel for dark feature sections (house style). Use on the
-   section element; the content inside still uses Container. */
-@utility panel {
-  margin-inline: var(--panel-inset);
-  border-radius: var(--panel-radius);
-  overflow: clip;
-}
-
-/* Wide screens: from 1600px the content grows with the window, at 90% of it. */
-@media (min-width: 1600px) {
+/* Section padding steps up with the screen: 60px → 80px (tablet) → 100px (desktop). */
+@media (min-width: 768px) {
   :root {
-    --container-site: 90%;
+    --spacing-section: 5rem;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --spacing-section: 6.25rem;
   }
 }
 
-/* Anything set at a heading size reads as a heading, whatever its element. */
+/* Anything set at a heading size reads as a heading, whatever its element:
+   the large sizes in the display serif, the small ones in the UI sans. */
 @layer base {
   .text-hero,
   .text-display,
   .text-h2,
-  .text-h3,
-  .text-h4,
   .text-stat {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+  .text-h3 {
     font-family: var(--font-heading);
   }
 }
@@ -229,19 +282,12 @@
   }
 }
 
-/* Two panels in a row keep a gap, so their rounded edges never fuse. */
-@layer utilities {
-  .panel + .panel {
-    margin-top: var(--panel-inset);
-  }
-}
-
-/* Accent words: same face, lighter weight and a brand colour (set by the
-   component), so two-tone headlines read as one confident line. */
+/* Accent words: the title face at a light weight in a brand colour (set by
+   the component), so two-tone headlines read as one line. */
 @utility accent {
-  font-family: inherit;
+  font-family: var(--font-display);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 /* ==========================================================================
@@ -258,11 +304,11 @@
 
   body {
     min-height: 100dvh;
-    background-color: var(--color-surface);
-    color: var(--color-body);
+    background-color: var(--color-night);
+    color: var(--color-haze);
     font-family: var(--font-sans);
     font-size: 1rem;
-    line-height: 1.65;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -274,7 +320,7 @@
   h2,
   h3,
   h4 {
-    color: var(--color-ink);
+    color: var(--color-fog);
     font-family: var(--font-heading);
     font-optical-sizing: auto;
     text-wrap: balance;
@@ -282,53 +328,37 @@
     overflow-wrap: break-word;
   }
 
+  h1,
+  h2 {
+    font-family: var(--font-display);
+  }
+
   p {
     text-wrap: pretty;
   }
 
   /* Figures line up in stats, prices and tables. */
-  .font-mono,
   [data-numeric] {
     font-variant-numeric: tabular-nums;
   }
 
   ::selection {
     background-color: rgb(0 225 234 / 0.3);
-    color: var(--color-ink);
+    color: var(--color-fog);
   }
 
-  /* Form inputs ensure dark readable text on light fields, and white on dark surfaces */
+  /* Form inputs: light text and a cyan caret on night. */
   input,
   textarea,
   select {
-    color: var(--color-ink);
-    caret-color: var(--color-cyan-ink);
-  }
-
-  .surface-abyss input,
-  .surface-abyss textarea,
-  .surface-abyss select,
-  .surface-navy input,
-  .surface-navy textarea,
-  .surface-navy select {
-    color: #ffffff;
+    color: var(--color-fog);
     caret-color: var(--color-cyan);
-  }
-
-  input.bg-white,
-  textarea.bg-white,
-  .bg-white input,
-  .bg-white textarea,
-  .bg-surface input,
-  .bg-surface textarea {
-    color: #0b1220 !important;
-    caret-color: #00737b !important;
   }
 
   input::placeholder,
   textarea::placeholder {
-    color: var(--color-muted);
-    opacity: 0.8;
+    color: var(--color-dim);
+    opacity: 1;
   }
 
   :focus-visible {
@@ -343,10 +373,17 @@
 }
 
 /* Arabic. Unlayered so it wins over utilities: Arabic script must not be
-   tracked, and the Latin serif italic accent has no Arabic glyphs (browsers
-   would fake an oblique), so the accent keeps the heading face. */
+   tracked or set in capitals, and Cairo's tall ascenders and descenders need
+   more line height than condensed Latin capitals. */
 :lang(ar) :is(h1, h2, h3, h4, p, span, li, a, button, dt, dd) {
   letter-spacing: 0;
+}
+:lang(ar) :is(.text-hero, .text-display, .text-h2, .text-stat) {
+  font-weight: 800;
+  line-height: 1.25;
+}
+:lang(ar) .accent {
+  font-weight: 500;
 }
 
 /* Load reveal without a flash: elements marked [data-intro] start hidden
@@ -362,6 +399,24 @@
 @keyframes intro-fallback {
   to {
     visibility: visible;
+  }
+}
+
+/* The hero's letterbox bars cover the photograph before hydration (no flash
+   of the photo at full size), only when JavaScript runs and motion is
+   allowed. GSAP slides them away; if it never runs they vanish after 3s. */
+[data-letterbox] {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-letterbox] {
+    display: block;
+    animation: letterbox-fallback 0s 3s forwards;
+  }
+}
+@keyframes letterbox-fallback {
+  to {
+    visibility: hidden;
   }
 }
 

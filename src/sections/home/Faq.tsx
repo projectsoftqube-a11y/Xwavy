@@ -7,14 +7,5 @@ type FaqProps = { locale: Locale; dict: Dictionary };
 
 export function Faq({ locale, dict }: FaqProps) {
   const t = dict.home.faq;
-  return (
-    <FaqSection
-      id="faq-title"
-      eyebrow={t.eyebrow}
-      titleLead={t.titleLead}
-      titleAccent={t.titleAccent}
-      items={t.items}
-      help={faqHelp(locale, dict)}
-    />
-  );
+  return <FaqSection id="faq-title" number="06" eyebrow={t.eyebrow} titleLead={t.titleLead} titleAccent={t.titleAccent} items={t.items} help={faqHelp(locale, dict)} />;
 }

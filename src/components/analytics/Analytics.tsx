@@ -95,10 +95,10 @@ gtag('js',new Date());gtag('config',${JSON.stringify(measurementId)});`}
 
       {showBanner ? (
         <div className="pointer-events-none fixed inset-x-(--panel-inset) bottom-(--panel-inset) z-header flex justify-end">
-          <section aria-label={labels.label} className="surface-navy pointer-events-auto w-full rounded-3xl border border-white/15 p-5 shadow-elevated sm:max-w-md">
-            <p className="text-sm text-mist">
+          <section aria-label={labels.label} className="pointer-events-auto w-full rounded-3xl border border-hair-strong bg-night-1/90 p-5 shadow-night backdrop-blur-xl sm:max-w-md">
+            <p className="text-base text-haze">
               {labels.message}{" "}
-              <Link href={policyHref} className="text-white underline underline-offset-2 transition-colors hover:text-cyan">
+              <Link href={policyHref} className="text-fog underline underline-offset-2 transition-colors hover:text-cyan">
                 {labels.policy}
               </Link>
             </p>

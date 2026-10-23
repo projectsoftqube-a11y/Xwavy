@@ -35,6 +35,7 @@ const ar: Dictionary = {
     openMenu: "فتح القائمة",
     closeMenu: "إغلاق القائمة",
     language: "اللغة",
+    autoplay: { play: "تشغيل العرض التلقائي", pause: "إيقاف العرض التلقائي مؤقتًا" },
     faqHelp: {
       title: "لديك سؤال آخر؟",
       body: "راسلنا على info@xwavy.com، أو اختر موضوعًا من صفحة التواصل.",
@@ -85,6 +86,7 @@ const ar: Dictionary = {
     rights: "جميع الحقوق محفوظة.",
     poweredBy: "بدعم من Wavy Solutions",
     backToTop: "العودة إلى الأعلى",
+    credit: "تصميم وتطوير",
   },
 
   home: {

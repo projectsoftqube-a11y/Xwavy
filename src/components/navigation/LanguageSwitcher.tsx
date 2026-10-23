@@ -10,8 +10,6 @@ type LanguageSwitcherProps = {
   current: Locale;
   label: string;
   className?: string;
-  /** `dark` (default) for dark surfaces, `light` for white ones. */
-  tone?: "dark" | "light";
 };
 
 /**
@@ -19,7 +17,7 @@ type LanguageSwitcherProps = {
  * year, so the proxy stops auto-detecting. A plain <a>: each locale has its
  * own root layout, so switching is a full page load either way.
  */
-export function LanguageSwitcher({ current, label, className, tone = "dark" }: LanguageSwitcherProps) {
+export function LanguageSwitcher({ current, label, className }: LanguageSwitcherProps) {
   const pathname = usePathname();
   const target: Locale = current === "en" ? "ar" : "en";
 
@@ -33,8 +31,7 @@ export function LanguageSwitcher({ current, label, className, tone = "dark" }: L
         document.cookie = `${localeCookie}=${target}; path=/; max-age=31536000; samesite=lax`;
       }}
       className={cn(
-        "inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm transition-colors",
-        tone === "dark" ? "text-mist hover:bg-white/5 hover:text-white" : "text-body hover:bg-surface hover:text-ink",
+        "inline-flex min-h-10 items-center gap-2 rounded-(--radius-control) px-3 text-base text-haze transition-colors hover:bg-white/[0.05] hover:text-fog",
         className,
       )}
     >

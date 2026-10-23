@@ -36,15 +36,28 @@ export default async function HowItWorksPage() {
     <>
       <HowHero
         t={t.hero}
-        steps={home.process.steps.map((step, i) => ({ name: step.name, status: home.process.statuses[i] ?? "" }))}
-        roles={{ innovator: home.consent.innovatorRole, investor: home.consent.investorRole }}
+        steps={home.process.steps.map((step, i) => ({
+          name: step.name,
+          status: home.process.statuses[i] ?? "",
+        }))}
+        roles={{
+          innovator: home.consent.innovatorRole,
+          investor: home.consent.investorRole,
+        }}
         revealed={home.consent.revealed}
         imageAlt={alt.hiwHero}
         primaryHref={portalHref(locale, "signUpInnovator")}
         secondaryHref={localeHref(locale, "/for-investors")}
       />
 
-      <PathTimelines t={t.tracks} alts={{ innovator: alt.hiwPathInnovator, investor: alt.hiwPathInvestor }} />
+      <PathTimelines
+        t={t.tracks}
+        alts={{
+          innovator: alt.hiwPathInnovator,
+          investor: alt.hiwPathInvestor,
+        }}
+        labels={{ step: home.process.stepLabel, of: home.process.of, shared: home.consent.revealed, ...dict.common.autoplay }}
+      />
       <OutcomeSwitch
         t={t.simulator}
         labels={{
@@ -54,14 +67,18 @@ export default async function HowItWorksPage() {
           sealed: home.consent.sealed,
           revealed: home.consent.revealed,
         }}
-        photo={{ src: "/images/site/hiw-outcome-detail.webp", alt: alt.hiwOutcome }}
+        photo={{
+          src: "/images/site/hiw-outcome-detail.webp",
+          alt: alt.hiwOutcome,
+        }}
+        controls={dict.common.autoplay}
       />
-      <LifecycleFlow t={t.lifecycle} />
-      <LayerViewer t={t.layers} />
+      <LifecycleFlow t={t.lifecycle} controls={dict.common.autoplay} />
+      <LayerViewer t={t.layers} controls={dict.common.autoplay} />
 
-      <Statement eyebrow={t.facilitator.eyebrow} parts={t.facilitator.parts} footnote={t.facilitator.footnote} tone="dark" />
+      <Statement eyebrow={t.facilitator.eyebrow} parts={t.facilitator.parts} footnote={t.facilitator.footnote} tone="dark" background="/images/site/hiw-hero-wide.webp" />
 
-      <FaqSection id="hiw-faq" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} help={faqHelp(locale, dict)} />
+      <FaqSection id="hiw-faq" number="05" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} help={faqHelp(locale, dict)} />
     </>
   );
 }

@@ -10,7 +10,7 @@
 export const siteUrl = new URL(process.env.SITE_URL ?? "https://www.xwavy.com");
 
 /**
- * The portal (sign in, sign up, idea directory) is a separate product. Set
+ * The portal (sign in, sign up) is a separate product. Set
  * PORTAL_URL to its address once it is live (e.g. https://app.xwavy.com);
  * until then it falls back to the current xwavy.com platform. If the new
  * portal names its pages differently, change the paths in `portalPaths`.
@@ -20,7 +20,6 @@ export const portalUrl = new URL(process.env.PORTAL_URL ?? "https://www.xwavy.co
 const portalPaths = {
   signIn: "/login",
   signUpInnovator: "/submit-idea",
-  browseIdeas: "/ideas",
 } as const;
 
 /** Where the website hands visitors over to the portal; every button on the site follows these. */
@@ -46,6 +45,8 @@ export const siteConfig = {
   name: "Xwavy",
   /** Contact address published on the current xwavy.com. */
   email: "info@xwavy.com",
+  /** The studio that designed and built the site, credited in the footer. */
+  credit: { name: "Softqube Technologies LLC", href: "https://www.softqubes.com" },
   logo: {
     /** Cyan wordmark on transparent background. Designed for dark surfaces. */
     src: "/brand/xwavy-logo.png",

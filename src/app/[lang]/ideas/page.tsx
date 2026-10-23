@@ -6,7 +6,7 @@ import { getLocale } from "@/i18n/get-dictionary";
 import { pageCopy } from "@/i18n/page-copy";
 import copy from "@/i18n/pages/ideas";
 import imagesCopy from "@/i18n/pages/images";
-import { localeHref, portalHref } from "@/lib/href";
+import { localeHref } from "@/lib/href";
 import { pageMetadata } from "@/lib/metadata";
 import { FilterPanel } from "@/sections/ideas/FilterPanel";
 import { IdeaAnatomy } from "@/sections/ideas/IdeaAnatomy";
@@ -35,7 +35,7 @@ export default async function IdeasPage() {
         titleAccent={t.hero.titleAccent}
         body={t.hero.body}
         actions={[
-          { label: t.hero.primary, href: portalHref(locale, "browseIdeas"), variant: "accent" },
+          { label: t.hero.primary, href: "#id-layers", variant: "accent" },
           { label: t.hero.secondary, href: localeHref(locale, "/how-it-works"), variant: "outline-inverse" },
         ]}
         points={t.hero.points}

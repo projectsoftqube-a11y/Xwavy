@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Responsive ladder (house convention). Design base is 1920px: unprefixed.
+   One max-width query per step, in this order, each noted with the screen
+   width it is checked at. The queries sit deliberately above the checked
+   width (check 1680, query 1699): do not "tidy" them. Keep every step, even
+   when empty, so the ladder can be reviewed screen by screen.
+
+   Component layouts use Tailwind's breakpoints in their markup; this file
+   holds the rules that follow the ladder itself, starting with the site
+   container (used by <Container>, utility `site-container` in globals.css):
+   1620px from 1600px screens up, 1420px up to 1599px, and 90% of the screen
+   from 1499px down to 320px. No padding: the width alone sets the side
+   margins (the utility caps it at the screen width less 16px a side, so the
+   1620px container never spills past a 1600–1650px screen).
+   ========================================================================== */
+
+/* Base: checked at 1920px. */
+:root {
+  --site-container: 1620px;
+}
+
+/* Checked at 1680px. */
+@media (max-width: 1699px) {
+}
+
+/* Checked at 1600px. */
+@media (max-width: 1679px) {
+}
+
+/* Checked at 1536px. */
+@media (max-width: 1599px) {
+  :root {
+    --site-container: 1420px;
+  }
+}
+
+/* Checked at 1440px. */
+@media (max-width: 1499px) {
+  :root {
+    --site-container: 90%;
+  }
+}
+
+/* Checked at 1366px. */
+@media (max-width: 1399px) {
+}
+
+/* Checked at 1280px. */
+@media (max-width: 1299px) {
+}
+
+/* Checked at 1024px. */
+@media (max-width: 1199px) {
+}
+
+/* Checked at 992px. */
+@media (max-width: 1023px) {
+}
+
+/* Checked at 801px. */
+@media (max-width: 991px) {
+}
+
+/* Checked at 768px. */
+@media (max-width: 800px) {
+}
+
+/* Checked at 576px. */
+@media (max-width: 767px) {
+}
+
+/* Checked at 481px. */
+@media (max-width: 575px) {
+}
+
+/* Checked at 390px. */
+@media (max-width: 480px) {
+}
+
+/* Checked at 375px. */
+@media (max-width: 389px) {
+}
+
+/* Checked at 320px. */
+@media (max-width: 374px) {
+}

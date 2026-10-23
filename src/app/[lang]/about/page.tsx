@@ -9,7 +9,7 @@ import { getLocale } from "@/i18n/get-dictionary";
 import { pageCopy } from "@/i18n/page-copy";
 import copy from "@/i18n/pages/about";
 import imagesCopy from "@/i18n/pages/images";
-import { portalHref } from "@/lib/href";
+import { localeHref, portalHref } from "@/lib/href";
 import { pageMetadata } from "@/lib/metadata";
 
 const PRINCIPLE_ICONS = [LockKeyhole, ShieldCheck, Sprout, Globe] as const;
@@ -25,7 +25,7 @@ export default async function AboutPage() {
   const t = await pageCopy(copy);
   const alt = await pageCopy(imagesCopy);
   const signUp = portalHref(locale, "signUpInnovator");
-  const browse = portalHref(locale, "browseIdeas");
+  const browse = localeHref(locale, "/ideas");
 
   return (
     <>
@@ -46,6 +46,7 @@ export default async function AboutPage() {
 
       <SplitFeature
         id="ab-mission"
+        number="01"
         eyebrow={t.mission.eyebrow}
         titleLead={t.mission.titleLead}
         titleAccent={t.mission.titleAccent}
@@ -53,22 +54,29 @@ export default async function AboutPage() {
         tone="surface"
         lists={[
           { title: t.mission.innovatorsTitle, items: t.mission.innovators },
-          { title: t.mission.investorsTitle, items: t.mission.investors, tone: "hidden" },
+          {
+            title: t.mission.investorsTitle,
+            items: t.mission.investors,
+            tone: "hidden",
+          },
         ]}
         image={{ src: "/images/site/ab-mission.webp", alt: alt.abMission }}
       />
 
       <CardGrid
         id="ab-principles"
+        number="02"
         eyebrow={t.principles.eyebrow}
         titleLead={t.principles.titleLead}
         titleAccent={t.principles.titleAccent}
         columns={4}
-        cards={t.principles.cards.map((card, i) => ({ ...card, Icon: PRINCIPLE_ICONS[i] }))}
+        cards={t.principles.cards.map((card, i) => ({
+          ...card,
+          Icon: PRINCIPLE_ICONS[i],
+        }))}
       />
 
       <Statement eyebrow={t.operator.eyebrow} parts={t.operator.parts} footnote={t.operator.footnote} tone="dark" background="/images/site/ab-operator-bg.webp" />
-
     </>
   );
 }

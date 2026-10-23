@@ -16,12 +16,7 @@ import { localeHref, portalHref } from "@/lib/href";
 import { faqHelp } from "@/lib/faq-help";
 import { pageMetadata } from "@/lib/metadata";
 
-const STEP_PHOTOS = [
-  "/images/site/fv-step-browse.webp",
-  "/images/site/fv-step-mandate.webp",
-  "/images/site/fv-step-subscribe.webp",
-  "/images/site/fv-step-request.webp",
-] as const;
+const STEP_PHOTOS = ["/images/site/fv-step-browse.webp", "/images/site/fv-step-mandate.webp", "/images/site/fv-step-subscribe.webp", "/images/site/fv-step-request.webp"] as const;
 const STEP_ICONS = [Search, FileText, LockOpen, Send] as const;
 const RULE_ICONS = [Ticket, RotateCcw, Ban, BadgeCheck] as const;
 
@@ -42,7 +37,7 @@ export default async function ForInvestorsPage() {
   const access = await pageCopy(accessCopy);
   const alt = await pageCopy(imagesCopy);
   const stepAlts = [alt.fvBrowse, alt.fvMandate, alt.fvSubscribe, alt.fvRequest];
-  const browse = portalHref(locale, "browseIdeas");
+  const browse = localeHref(locale, "/ideas");
   const pricing = localeHref(locale, "/pricing");
 
   return (
@@ -55,21 +50,38 @@ export default async function ForInvestorsPage() {
         body={t.hero.body}
         actions={[
           { label: t.hero.primary, href: browse, variant: "accent" },
-          { label: t.hero.secondary, href: pricing, variant: "outline-inverse" },
+          {
+            label: t.hero.secondary,
+            href: pricing,
+            variant: "outline-inverse",
+          },
         ]}
         points={t.hero.points}
-        image={{ src: "/images/site/fv-hero.webp", alt: alt.fvHero, position: "object-[50%_30%]" }}
+        image={{
+          src: "/images/site/fv-hero.webp",
+          alt: alt.fvHero,
+          position: "object-[50%_30%]",
+        }}
       />
 
       <StepStory
         id="fv-steps"
+        number="01"
         eyebrow={t.steps.eyebrow}
         titleLead={t.steps.titleLead}
         titleAccent={t.steps.titleAccent}
-        labels={{ step: t.steps.stepLabel, of: t.steps.of, play: t.steps.play, pause: t.steps.pause }}
+        labels={{
+          step: t.steps.stepLabel,
+          of: t.steps.of,
+          play: t.steps.play,
+          pause: t.steps.pause,
+        }}
         steps={t.steps.items.map((step, i) => ({
           ...step,
-          image: { src: STEP_PHOTOS[i] ?? STEP_PHOTOS[0], alt: stepAlts[i] ?? "" },
+          image: {
+            src: STEP_PHOTOS[i] ?? STEP_PHOTOS[0],
+            alt: stepAlts[i] ?? "",
+          },
           icon: (() => {
             const Icon = STEP_ICONS[i] ?? Search;
             return <Icon aria-hidden className="size-5" />;
@@ -79,6 +91,7 @@ export default async function ForInvestorsPage() {
 
       <CompareTable
         id="fv-compare"
+        number="02"
         eyebrow={t.compare.eyebrow}
         titleLead={t.compare.titleLead}
         titleAccent={t.compare.titleAccent}
@@ -91,15 +104,20 @@ export default async function ForInvestorsPage() {
 
       <CardGrid
         id="fv-rules"
+        number="03"
         eyebrow={t.rules.eyebrow}
         titleLead={t.rules.titleLead}
         titleAccent={t.rules.titleAccent}
         columns={4}
-        cards={t.rules.cards.map((card, i) => ({ ...card, Icon: RULE_ICONS[i] }))}
+        cards={t.rules.cards.map((card, i) => ({
+          ...card,
+          Icon: RULE_ICONS[i],
+        }))}
       />
 
       <SplitFeature
         id="fv-cancel"
+        number="04"
         eyebrow={t.cancel.eyebrow}
         titleLead={t.cancel.titleLead}
         titleAccent={t.cancel.titleAccent}
@@ -113,8 +131,7 @@ export default async function ForInvestorsPage() {
         image={{ src: "/images/site/fv-cancel.webp", alt: alt.fvCancel }}
       />
 
-      <FaqSection id="fv-faq" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} tone="white" help={faqHelp(locale, dict)} />
-
+      <FaqSection id="fv-faq" number="05" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} tone="white" help={faqHelp(locale, dict)} />
     </>
   );
 }

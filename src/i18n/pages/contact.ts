@@ -30,6 +30,14 @@ const en = {
     submit: "Open in my email app",
     directLabel: "Or write to us directly",
     privacyNote: "Please don’t include passwords or card details in your message.",
+    /** Shown in red under a field that needs fixing. */
+    errors: {
+      name: "Please enter your name.",
+      emailMissing: "Please enter your email address.",
+      emailInvalid: "Please enter a valid email address, like name@example.com.",
+      message: "Please write your message.",
+      messageShort: "Please add a little more detail (at least 10 characters).",
+    },
     topics: [
       "General question",
       "Innovator support",
@@ -76,6 +84,13 @@ const ar: typeof en = {
     submit: "افتح في تطبيق البريد",
     directLabel: "أو راسلنا مباشرة",
     privacyNote: "يُرجى عدم ذكر كلمات المرور أو بيانات البطاقة في رسالتك.",
+    errors: {
+      name: "يُرجى إدخال اسمك.",
+      emailMissing: "يُرجى إدخال بريدك الإلكتروني.",
+      emailInvalid: "يُرجى إدخال بريد إلكتروني صحيح، مثل name@example.com.",
+      message: "يُرجى كتابة رسالتك.",
+      messageShort: "يُرجى إضافة مزيد من التفاصيل (10 أحرف على الأقل).",
+    },
     topics: [
       "سؤال عام",
       "دعم المبتكرين",

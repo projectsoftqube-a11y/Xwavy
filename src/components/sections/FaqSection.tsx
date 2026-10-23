@@ -2,129 +2,198 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Mail, Plus } from "lucide-react";
-import { useId, useState, type ReactNode } from "react";
+import { useId, useRef, useState } from "react";
 
-import { Section, type SectionTone } from "@/components/layout/Section";
+import { CinemaHeading } from "@/components/animation/CinemaHeading";
+import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
-import { refreshScrollTrigger } from "@/lib/gsap";
-import { DURATION, EASE } from "@/lib/motion";
+import { gsap, refreshScrollTrigger, useGSAP } from "@/lib/gsap";
+import { DURATION, EASE, MEDIA } from "@/lib/motion";
 
 export type FaqItem = { q: string; a: string };
 
 type FaqSectionProps = {
+  /** Id of the section heading. */
   id: string;
   eyebrow: string;
+  /** Section number shown in the eyebrow, e.g. "06". */
   number?: string;
   titleLead: string;
   titleAccent?: string;
-  /** Optional line under the heading. */
-  aside?: ReactNode;
-  /** "Still have a question?" card under the heading. */
-  help?: { title: string; body: string; cta: string; href: string; email: string };
   items: readonly FaqItem[];
-  tone?: Extract<SectionTone, "surface" | "white">;
+  /** "Still have a question?" strip under the questions. */
+  help?: {
+    title: string;
+    body: string;
+    cta: string;
+    href: string;
+    email: string;
+  };
+  /** Kept for compatibility: the section sits on night. */
+  tone?: "surface" | "white" | "night";
   className?: string;
 };
 
 /**
- * Accordion of questions with a sticky heading. One item open at a time; each
- * trigger is a real button with aria-expanded/aria-controls. Height changes
- * shift every scroll trigger below, so positions refresh after each animation.
+ * Questions as two columns of cards (one on phones), so opening a card never
+ * moves the other column. Each card shows its number, the question and a
+ * round toggle; the open card's border lights and its answer slides open.
+ * One card is open at a time. A wide strip under the cards offers the way to
+ * ask anything else. Cards rise in one after another on scroll.
  */
-export function FaqSection({
-  id,
-  eyebrow,
-  number,
-  titleLead,
-  titleAccent,
-  aside,
-  help,
-  items,
-  tone = "surface",
-  className,
-}: FaqSectionProps) {
-  const [open, setOpen] = useState<number | null>(0);
+export function FaqSection({ id, eyebrow, number, titleLead, titleAccent, items, help, className }: FaqSectionProps) {
+  const root = useRef<HTMLElement>(null);
   const baseId = useId();
+  const [open, setOpen] = useState<number | null>(0);
+  const half = Math.ceil(items.length / 2);
+  const columns = [items.slice(0, half).map((item, i) => ({ item, i })), items.slice(half).map((item, i) => ({ item, i: i + half }))];
+
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(root);
+      const mm = gsap.matchMedia();
+      mm.add(MEDIA.motionOk, () => {
+        gsap.from(q("[data-faq-card]"), {
+          y: 40,
+          autoAlpha: 0,
+          duration: 1,
+          ease: "expo.out",
+          stagger: 0.07,
+          scrollTrigger: {
+            trigger: q("[data-faq-grid]")[0],
+            start: "top 82%",
+            once: true,
+          },
+        });
+        gsap.from(q("[data-faq-help]"), {
+          y: 50,
+          autoAlpha: 0,
+          duration: 1.2,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: q("[data-faq-help]")[0],
+            start: "top 90%",
+            once: true,
+          },
+        });
+      });
+    },
+    { scope: root },
+  );
 
   return (
-    <Section tone={tone} aria-labelledby={id} className={className}>
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
-        <div className="flex flex-col gap-6 lg:sticky lg:top-32 lg:self-start">
-          <SectionHeading id={id} eyebrow={eyebrow} number={number} title={titleLead} accent={titleAccent} />
-          {aside ? <div className="text-sm text-muted">{aside}</div> : null}
-          {help ? (
-            <div className="surface-abyss bg-grid mt-2 flex flex-col gap-4 rounded-3xl p-6 sm:p-7">
-              <span className="grid size-11 place-items-center rounded-2xl bg-cyan text-abyss">
-                <Mail aria-hidden className="size-5" />
+    <section ref={root} aria-labelledby={id} className={cn("relative overflow-hidden border-t border-hair bg-night py-section", className)}>
+      <span aria-hidden className="glow-cyan pointer-events-none absolute -top-40 left-1/2 size-[50rem] -translate-x-1/2 opacity-40" />
+      <Container className="relative">
+        <CinemaHeading id={id} number={number} eyebrow={eyebrow} title={titleLead} accent={titleAccent} align="center" />
+
+        <div data-faq-grid className="mt-14 grid grid-cols-1 items-start gap-3 lg:mt-20 lg:grid-cols-2 lg:gap-4">
+          {columns.map((column, c) => (
+            <ul key={c} className="flex flex-col gap-3 lg:gap-4">
+              {column.map(({ item, i }) => {
+                const isOpen = open === i;
+                const buttonId = `${baseId}-q${i}`;
+                const panelId = `${baseId}-a${i}`;
+                return (
+                  <li
+                    key={item.q}
+                    data-faq-card
+                    className={cn(
+                      "relative overflow-hidden rounded-2xl border transition-[border-color,background-color] duration-500 ease-brand",
+                      isOpen ? "border-cyan/40 bg-night-2" : "border-hair bg-night-1 hover:border-hair-strong",
+                    )}
+                  >
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "absolute inset-x-0 top-0 h-px origin-left bg-linear-to-r from-transparent via-cyan to-transparent transition-transform duration-700 ease-brand rtl:origin-right",
+                        isOpen ? "scale-x-100" : "scale-x-0",
+                      )}
+                    />
+                    <h3>
+                      <button
+                        id={buttonId}
+                        type="button"
+                        aria-expanded={isOpen}
+                        aria-controls={panelId}
+                        onClick={() => setOpen(isOpen ? null : i)}
+                        className="group flex w-full items-start gap-4 p-5 text-start sm:gap-5 sm:p-6"
+                      >
+                        <span dir="ltr" className={cn("w-7 shrink-0 pt-0.5 font-display text-base tracking-[0.12em] transition-colors duration-500", isOpen ? "text-cyan" : "text-dim")} data-numeric>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          className={cn(
+                            "flex-1 font-display text-[1.25rem] leading-snug font-medium transition-colors duration-500 sm:text-[1.375rem]",
+                            isOpen ? "text-fog" : "text-fog/85 group-hover:text-fog",
+                          )}
+                        >
+                          {item.q}
+                        </span>
+                        <span
+                          aria-hidden
+                          className={cn(
+                            "grid size-10 shrink-0 place-items-center rounded-full border transition-[rotate,background-color,border-color,color] duration-500 ease-brand",
+                            isOpen ? "rotate-45 border-cyan bg-cyan text-night" : "border-hair-strong text-fog group-hover:border-cyan/60 group-hover:text-cyan",
+                          )}
+                        >
+                          <Plus className="size-4" />
+                        </span>
+                      </button>
+                    </h3>
+                    <AnimatePresence initial={false} onExitComplete={refreshScrollTrigger}>
+                      {isOpen ? (
+                        <motion.div
+                          id={panelId}
+                          role="region"
+                          aria-labelledby={buttonId}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{
+                            duration: DURATION.slow,
+                            ease: EASE.brand,
+                          }}
+                          onAnimationComplete={refreshScrollTrigger}
+                          className="overflow-hidden"
+                        >
+                          <p className="ps-16 pe-5 pb-6 text-base leading-relaxed text-haze sm:ps-[4.5rem] sm:pe-20">{item.a}</p>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </li>
+                );
+              })}
+            </ul>
+          ))}
+        </div>
+
+        {/* Anything else: a wide strip with the way to ask. */}
+        {help ? (
+          <div data-faq-help className="relative mt-12 overflow-hidden rounded-3xl border border-hair bg-night-1 p-6 sm:p-8 lg:mt-16 lg:p-10">
+            <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-cyan/70 to-transparent" />
+            <span aria-hidden className="glow-cyan pointer-events-none absolute -top-32 start-[-6rem] size-[26rem] opacity-60" />
+            <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
+              <span className="grid size-16 shrink-0 place-items-center rounded-full border border-cyan/40 text-cyan shadow-[0_0_30px_-6px_rgb(0_225_234/0.6)]">
+                <Mail aria-hidden className="size-6" strokeWidth={1.6} />
               </span>
-              <div>
-                <h3 className="text-h4 text-white">{help.title}</h3>
-                <p className="mt-1.5 text-sm text-mist">{help.body}</p>
+              <div className="flex-1">
+                <h3 className="font-display text-[clamp(1.5rem,1.3rem+0.8vw,2rem)] leading-none font-semibold text-fog uppercase">{help.title}</h3>
+                <p className="mt-2 max-w-xl text-base text-haze">{help.body}</p>
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <Button href={help.href} size="sm" variant="primary" arrow>
+              <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                <Button href={help.href} variant="primary" arrow>
                   {help.cta}
                 </Button>
-                <a href={`mailto:${help.email}`} dir="ltr" className="text-sm text-mist underline-offset-4 transition-colors hover:text-white hover:underline">
+                <a href={`mailto:${help.email}`} dir="ltr" className="text-base text-haze underline decoration-white/25 underline-offset-4 transition-colors hover:text-cyan hover:decoration-cyan">
                   {help.email}
                 </a>
               </div>
             </div>
-          ) : null}
-        </div>
-
-        <ul className="border-t border-line">
-          {items.map((item, i) => {
-            const isOpen = open === i;
-            const buttonId = `${baseId}-q${i}`;
-            const panelId = `${baseId}-a${i}`;
-            return (
-              <li key={item.q} className="border-b border-line">
-                <h3>
-                  <button
-                    id={buttonId}
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-controls={panelId}
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-6 py-6 text-start font-heading text-h4 text-ink"
-                  >
-                    {item.q}
-                    <span
-                      aria-hidden
-                      className={cn(
-                        "grid size-9 shrink-0 place-items-center rounded-full border transition-[transform,background-color,border-color] duration-300 ease-brand",
-                        isOpen ? "rotate-45 border-abyss bg-abyss text-white" : "border-line bg-white text-ink",
-                      )}
-                    >
-                      <Plus className="size-4" />
-                    </span>
-                  </button>
-                </h3>
-                <AnimatePresence initial={false} onExitComplete={refreshScrollTrigger}>
-                  {isOpen ? (
-                    <motion.div
-                      id={panelId}
-                      role="region"
-                      aria-labelledby={buttonId}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: DURATION.slow, ease: EASE.brand }}
-                      onAnimationComplete={refreshScrollTrigger}
-                      className="overflow-hidden"
-                    >
-                      <p className="max-w-2xl pb-6 text-body">{item.a}</p>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </Section>
+          </div>
+        ) : null}
+      </Container>
+    </section>
   );
 }

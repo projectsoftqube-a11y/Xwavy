@@ -17,9 +17,9 @@ const glide = { type: "spring", stiffness: 420, damping: 36 } as const;
 
 /**
  * The header's main links.
- * - The page you're on is a solid white pill, with a glowing cyan bar resting
- *   on the header's lower edge beneath it (also exposed as aria-current). Both
- *   slide to the new link when you navigate, because the header persists.
+ * - The page you're on reads in full white, with a fine glowing cyan line on
+ *   the header's lower hairline beneath it (also exposed as aria-current). It
+ *   slides to the new link when you navigate, because the header persists.
  * - A soft highlight follows the pointer from link to link.
  */
 export function DesktopNav({ label, items }: DesktopNavProps) {
@@ -41,9 +41,9 @@ export function DesktopNav({ label, items }: DesktopNavProps) {
                 onFocus={() => setHovered(item.href)}
                 onBlur={() => setHovered(null)}
                 className={cn(
-                  // px-3 until 2xl: at 1280px the seven links, sign-in and CTA only just fit the header.
-                  "relative inline-flex min-h-10 items-center rounded-full px-3 text-sm whitespace-nowrap transition-colors duration-300 2xl:px-4",
-                  current ? "font-semibold text-abyss" : "text-mist hover:text-white",
+                  // px-2 until 2xl: at 1280px the seven 16px links, language, sign-in and CTA only just fit the header.
+                  "relative inline-flex min-h-10 items-center rounded-(--radius-control) px-2 text-base whitespace-nowrap transition-colors duration-300 2xl:px-3.5",
+                  current ? "text-fog" : "text-haze hover:text-fog",
                 )}
               >
                 <AnimatePresence>
@@ -55,18 +55,10 @@ export function DesktopNav({ label, items }: DesktopNavProps) {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={glide}
-                      className="absolute inset-0 rounded-full bg-white/8 ring-1 ring-white/10"
+                      className="absolute inset-0 rounded-(--radius-control) bg-white/[0.06]"
                     />
                   ) : null}
                 </AnimatePresence>
-                {current ? (
-                  <motion.span
-                    layoutId={`${id}-active`}
-                    aria-hidden
-                    transition={{ duration: DURATION.slow, ease: EASE.brand }}
-                    className="absolute inset-0 rounded-full bg-white shadow-[0_6px_24px_-6px_rgb(0_225_234/0.55)]"
-                  />
-                ) : null}
                 <span className="relative">{item.label}</span>
               </Link>
               {current ? (
@@ -74,7 +66,7 @@ export function DesktopNav({ label, items }: DesktopNavProps) {
                   layoutId={`${id}-bar`}
                   aria-hidden
                   transition={{ duration: DURATION.slow, ease: EASE.brand }}
-                  className="pointer-events-none absolute -bottom-3 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-cyan shadow-[0_0_12px_2px_rgb(0_225_234/0.7)]"
+                  className="pointer-events-none absolute -bottom-[1rem] left-1/2 h-px w-10 -translate-x-1/2 bg-cyan shadow-[0_0_12px_1px_rgb(0_225_234/0.8)]"
                 />
               ) : null}
             </li>

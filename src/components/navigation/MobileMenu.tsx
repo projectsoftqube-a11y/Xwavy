@@ -137,8 +137,8 @@ export function MobileMenu({ items, locale, labels, signInHref, postIdeaHref, br
         aria-label={open ? labels.close : labels.open}
         onClick={toggle}
         className={cn(
-          "relative grid size-12 place-items-center rounded-full transition-colors duration-300",
-          open ? "bg-cyan text-abyss" : "text-white hover:bg-white/10",
+          "relative grid size-11 place-items-center rounded-(--radius-control) transition-colors duration-300",
+          open ? "bg-cyan text-night" : "text-fog hover:bg-white/[0.06]",
         )}
       >
         {/* Two bars that cross into an X. */}
@@ -163,15 +163,15 @@ export function MobileMenu({ items, locale, labels, signInHref, postIdeaHref, br
                   exit={{ clipPath: `circle(0px at ${at})`, transition: { ...curtain, duration: reduce ? 0 : 0.55 } }}
                   transition={curtain}
                   style={{ zIndex: "calc(var(--z-header) - 1)" }}
-                  className="surface-abyss fixed inset-0 overflow-x-hidden overflow-y-auto overscroll-contain"
+                  className="surface-night fixed inset-0 overflow-x-hidden overflow-y-auto overscroll-contain"
                   data-lenis-prevent
                 >
-                  <div className="mx-auto flex min-h-full w-full max-w-site flex-col px-gutter pt-[calc(var(--panel-inset)+6.5rem)] pb-[calc(var(--panel-inset)+1.5rem)]">
+                  <div className="site-container flex min-h-full flex-col pt-[calc(var(--spacing-header)+2rem)] pb-[calc(var(--panel-inset)+1.5rem)]">
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1, transition: rise(0) }}
                       exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                      className="flex items-center gap-3 font-mono text-eyebrow text-mist uppercase"
+                      className="flex items-center gap-3 font-display text-base tracking-[0.2em] text-haze uppercase"
                     >
                       <Image src="/brand/xwavy-mark.png" alt="" aria-hidden width={24} height={24} className="size-6 shrink-0 rounded-[0.4rem] ring-1 ring-white/15" />
                       {labels.menu}
@@ -195,13 +195,13 @@ export function MobileMenu({ items, locale, labels, signInHref, postIdeaHref, br
                                   aria-current={current ? "page" : undefined}
                                   className="group flex min-h-14 items-center gap-4 py-3 sm:min-h-16"
                                 >
-                                  <span className={cn("w-6 shrink-0 font-mono text-xs", current ? "text-cyan" : "text-mist")} data-numeric dir="ltr">
+                                  <span className={cn("w-6 shrink-0 font-display text-base tracking-[0.08em]", current ? "text-cyan" : "text-haze")} data-numeric dir="ltr">
                                     {String(i + 1).padStart(2, "0")}
                                   </span>
                                   <span
                                     className={cn(
-                                      "min-w-0 flex-1 font-heading text-[clamp(1.5rem,6.5vw,2.5rem)] leading-tight font-bold tracking-tight transition-colors duration-300",
-                                      current ? "text-cyan" : "text-white group-hover:text-cyan",
+                                      "min-w-0 flex-1 font-display text-[clamp(1.875rem,8vw,3rem)] leading-[1.05] transition-colors duration-300",
+                                      current ? "text-cyan" : "text-fog group-hover:text-cyan",
                                     )}
                                   >
                                     {item.label}
@@ -210,7 +210,7 @@ export function MobileMenu({ items, locale, labels, signInHref, postIdeaHref, br
                                     aria-hidden
                                     className={cn(
                                       "grid size-10 shrink-0 place-items-center rounded-full border transition-all duration-300 group-hover:rotate-45 rtl:-scale-x-100 rtl:group-hover:-rotate-45",
-                                      current ? "border-cyan bg-cyan text-abyss" : "border-white/15 text-mist group-hover:border-cyan group-hover:text-cyan",
+                                      current ? "border-cyan bg-cyan text-night" : "border-white/15 text-haze group-hover:border-cyan group-hover:text-cyan",
                                     )}
                                   >
                                     <ArrowUpRight className="size-4" />
@@ -238,17 +238,17 @@ export function MobileMenu({ items, locale, labels, signInHref, postIdeaHref, br
                         </Button>
                       </div>
                       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
-                        <a href={`mailto:${email}`} className="flex min-w-0 items-center gap-3 text-sm text-mist transition-colors hover:text-white">
+                        <a href={`mailto:${email}`} className="flex min-w-0 items-center gap-3 text-base text-haze transition-colors hover:text-fog">
                           <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-cyan">
                             <Mail aria-hidden className="size-4" />
                           </span>
                           <span className="min-w-0">
-                            <span className="block text-xs">{labels.contact}</span>
-                            <span className="block truncate text-white">{email}</span>
+                            <span className="block text-base">{labels.contact}</span>
+                            <span className="block truncate text-fog">{email}</span>
                           </span>
                         </a>
                         <div className="flex items-center gap-1">
-                          <Link href={signInHref} onClick={close} className="inline-flex min-h-10 items-center rounded-full px-4 text-sm text-white transition-colors hover:bg-white/10">
+                          <Link href={signInHref} onClick={close} className="inline-flex min-h-10 items-center rounded-full px-4 text-base text-fog transition-colors hover:bg-white/10">
                             {labels.signIn}
                           </Link>
                           <LanguageSwitcher current={locale} label={labels.language} />

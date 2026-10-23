@@ -44,26 +44,39 @@ export default async function ForInnovatorsPage() {
         body={t.hero.body}
         actions={[
           { label: t.hero.primary, href: signUp, variant: "primary" },
-          { label: t.hero.secondary, href: localeHref(locale, "/how-it-works"), variant: "outline-inverse" },
+          {
+            label: t.hero.secondary,
+            href: localeHref(locale, "/how-it-works"),
+            variant: "outline-inverse",
+          },
         ]}
         points={t.hero.points}
-        image={{ src: "/images/site/fi-hero.webp", alt: alt.fiHero, position: "object-[55%_center]" }}
+        image={{
+          src: "/images/site/fi-hero.webp",
+          alt: alt.fiHero,
+          position: "object-[55%_center]",
+        }}
       />
 
       <ComposerSteps t={composer} image={{ src: "/images/site/fi-composer.webp", alt: alt.fiComposer }} />
 
       <CardGrid
         id="fi-review"
+        number="02"
         eyebrow={review.eyebrow}
         titleLead={review.titleLead}
         titleAccent={review.titleAccent}
         description={review.description}
         image={{ src: "/images/site/fi-review.webp", alt: alt.fiReview }}
-        cards={review.cards.map((card, i) => ({ ...card, Icon: REVIEW_ICONS[i] }))}
+        cards={review.cards.map((card, i) => ({
+          ...card,
+          Icon: REVIEW_ICONS[i],
+        }))}
       />
 
       <SplitFeature
         id="fi-decision"
+        number="03"
         eyebrow={decision.eyebrow}
         titleLead={decision.titleLead}
         titleAccent={decision.titleAccent}
@@ -71,7 +84,11 @@ export default async function ForInnovatorsPage() {
         tone="surface"
         lists={[
           { title: decision.seeTitle, items: decision.see },
-          { title: decision.hiddenTitle, items: decision.hidden, tone: "hidden" },
+          {
+            title: decision.hiddenTitle,
+            items: decision.hidden,
+            tone: "hidden",
+          },
         ]}
         note={decision.promise}
         image={{ src: "/images/site/fi-decision.webp", alt: alt.fiDecision }}
@@ -79,15 +96,19 @@ export default async function ForInnovatorsPage() {
 
       <CardGrid
         id="fi-dashboard"
+        number="04"
         eyebrow={dashboard.eyebrow}
         titleLead={dashboard.titleLead}
         titleAccent={dashboard.titleAccent}
         layout="bento"
-        cards={dashboard.items.map((item, i) => ({ ...item, Icon: DASHBOARD_ICONS[i], background: i === 0 ? "/images/site/fi-dashboard.webp" : undefined }))}
+        cards={dashboard.items.map((item, i) => ({
+          ...item,
+          Icon: DASHBOARD_ICONS[i],
+          background: i === 0 ? "/images/site/fi-dashboard.webp" : undefined,
+        }))}
       />
 
-      <FaqSection id="fi-faq" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} help={faqHelp(locale, dict)} />
-
+      <FaqSection id="fi-faq" number="05" eyebrow={t.faq.eyebrow} titleLead={t.faq.titleLead} titleAccent={t.faq.titleAccent} items={t.faq.items} help={faqHelp(locale, dict)} />
     </>
   );
 }

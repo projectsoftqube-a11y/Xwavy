@@ -6,8 +6,6 @@ import type { PageCopy } from "@/i18n/page-copy";
  * one place. Textures and backgrounds are decorative and have no entry.
  */
 const en = {
-  homeHeroFounder: "A young Emirati founder standing by a tall window in a bright co-working loft, notebook in hand",
-  homeHeroInvestor: "An Emirati investor in a white kandura and ghutra on a sunlit terrace, a leather folio in hand",
   homeRolesInnovator: "A young Emirati engineer in a white kandura assembling a hardware prototype at his workbench",
   homeRolesInvestor: "An investor in a white kandura and ghutra at his desk by the window, pen in hand",
   homeStep1: "The founder filling in a step-by-step form on his laptop at night",
@@ -15,7 +13,6 @@ const en = {
   homeStep3: "An investor's hands scrolling a grid of ideas on a tablet, Arabic coffee beside it",
   homeStep4: "The investor about to send an introduction request from his tablet at dusk",
   homeStep5: "The founder smiling at an accepted request on his phone at golden hour",
-  homePlans: "A notebook of product sketches, a laptop and Arabic coffee on a sunlit desk",
   hiwHero: "The founder and the investor in a Dubai business lounge at blue hour, catching each other's eye",
   hiwPathInnovator: "The founder walking through a sunlit co-working atrium with his laptop",
   hiwPathInvestor: "The investor reading a tablet in the back of a car at dusk",
@@ -39,8 +36,6 @@ const en = {
 };
 
 const ar: typeof en = {
-  homeHeroFounder: "مؤسس إماراتي شاب يقف بجوار نافذة طويلة في مساحة عمل مشتركة مشرقة وفي يده دفتر",
-  homeHeroInvestor: "مستثمر إماراتي بالكندورة البيضاء والغترة على شرفة مشمسة وفي يده حافظة جلدية",
   homeRolesInnovator: "مهندس إماراتي شاب بالكندورة البيضاء يجمّع نموذجًا أوليًا لجهاز على طاولة عمله",
   homeRolesInvestor: "مستثمر بالكندورة البيضاء والغترة على مكتبه بجوار النافذة والقلم في يده",
   homeStep1: "المؤسس يملأ نموذجًا من عدة خطوات على حاسوبه ليلًا",
@@ -48,7 +43,6 @@ const ar: typeof en = {
   homeStep3: "يدا مستثمر تتصفحان مجموعة من الأفكار على جهاز لوحي وبجانبه القهوة العربية",
   homeStep4: "المستثمر على وشك إرسال طلب تعارف من جهازه اللوحي عند الغروب",
   homeStep5: "المؤسس يبتسم لطلب مقبول على هاتفه وقت الغروب",
-  homePlans: "دفتر رسومات لمنتج وحاسوب وقهوة عربية على مكتب مشمس",
   hiwHero: "المؤسس والمستثمر في صالة أعمال في دبي عند الغسق، وتلتقي نظراتهما",
   hiwPathInnovator: "المؤسس يمشي في ردهة مساحة عمل مشتركة مشمسة ومعه حاسوبه",
   hiwPathInvestor: "المستثمر يقرأ على جهاز لوحي في المقعد الخلفي لسيارة عند الغروب",
