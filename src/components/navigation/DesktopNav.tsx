@@ -41,7 +41,8 @@ export function DesktopNav({ label, items }: DesktopNavProps) {
                 onFocus={() => setHovered(item.href)}
                 onBlur={() => setHovered(null)}
                 className={cn(
-                  "relative inline-flex min-h-10 items-center rounded-full px-4 text-sm transition-colors duration-300",
+                  // px-3 until 2xl: at 1280px the seven links, sign-in and CTA only just fit the header.
+                  "relative inline-flex min-h-10 items-center rounded-full px-3 text-sm whitespace-nowrap transition-colors duration-300 2xl:px-4",
                   current ? "font-semibold text-abyss" : "text-mist hover:text-white",
                 )}
               >

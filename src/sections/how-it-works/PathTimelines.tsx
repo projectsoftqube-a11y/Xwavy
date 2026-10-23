@@ -175,16 +175,17 @@ export function PathTimelines({ t, alts }: PathTimelinesProps) {
           </svg>
           <span aria-hidden className="mx-auto mt-4 block h-12 w-0.5 bg-field/40 lg:hidden" />
 
-          <div data-meet className="surface-abyss bg-grid relative mx-auto max-w-3xl overflow-hidden rounded-3xl px-6 py-10 text-center sm:px-12 sm:py-12">
-            <div className="flex items-center justify-center gap-3 sm:gap-5">
+          <div data-meet className="surface-abyss bg-grid relative mx-auto max-w-3xl overflow-hidden rounded-3xl px-4 py-10 text-center sm:px-12 sm:py-12">
+            {/* Compact below sm so both tags and the ring fit a 320px screen; wraps rather than clips if a label runs long. */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-5">
               <RoleTag label={t.innovator.label} tone="innovator" />
               <span aria-hidden className="hidden h-px w-10 bg-cyan/60 sm:block" />
-              <span data-meet-coin aria-hidden className="relative grid size-16 shrink-0 place-items-center">
+              <span data-meet-coin aria-hidden className="relative grid size-12 shrink-0 place-items-center sm:size-16">
                 <span className="absolute inset-0 overflow-hidden rounded-full">
                   <span className="absolute inset-y-0 inset-s-0 w-1/2 bg-cyan" />
                   <span className="absolute inset-y-0 inset-e-0 w-1/2 bg-gold" />
                 </span>
-                <span className="relative grid size-12 place-items-center rounded-full bg-abyss text-white">
+                <span className="relative grid size-9 place-items-center rounded-full bg-abyss text-white sm:size-12">
                   <Handshake className="size-5" />
                 </span>
               </span>
@@ -203,8 +204,8 @@ export function PathTimelines({ t, alts }: PathTimelinesProps) {
 /** A side's name with the tick that stands for its yes. */
 function RoleTag({ label, tone }: { label: string; tone: "innovator" | "investor" }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 py-1 ps-1 pe-3 text-sm font-medium text-white">
-      <span className={cn("grid size-6 place-items-center rounded-full text-abyss", tone === "innovator" ? "bg-cyan" : "bg-gold")}>
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 py-1 ps-1 pe-2.5 text-xs font-medium whitespace-nowrap text-white sm:gap-2 sm:pe-3 sm:text-sm">
+      <span className={cn("grid size-5 place-items-center rounded-full text-abyss sm:size-6", tone === "innovator" ? "bg-cyan" : "bg-gold")}>
         <Check aria-hidden className="size-3.5" strokeWidth={3} />
       </span>
       {label}

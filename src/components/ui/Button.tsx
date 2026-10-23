@@ -70,7 +70,8 @@ function buttonClasses({ variant = "primary", size = "md", arrow, className }: O
 function Content({ variant = "primary", size = "md", arrow, children }: Omit<SharedProps, "className">) {
   return (
     <>
-      <span className="leading-snug text-balance">{children}</span>
+      {/* Balance only where wrapping is allowed: `text-wrap: balance` would also re-enable wrapping from sm up. */}
+      <span className="leading-snug max-sm:text-balance">{children}</span>
       {arrow ? (
         <span
           aria-hidden

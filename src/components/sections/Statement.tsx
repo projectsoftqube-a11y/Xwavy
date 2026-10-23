@@ -77,9 +77,9 @@ export function Statement({ eyebrow, parts, footnote, tone = "light", background
             </span>
             <span aria-hidden data-statement-rule className={cn("hidden w-px flex-1 origin-top lg:block", dark ? "bg-white/15" : "bg-line")} />
           </div>
-          {/* The statement fills the row; a footnote sits beside it on desktop, so the right side is never left empty. */}
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
-            <div className={cn("flex flex-col justify-end gap-7", footnote ? "lg:col-span-8" : "lg:col-span-12")}>
+          {/* The statement fills the row; a footnote sits beside it from xl (at lg its column is too narrow for an email address), so the right side is never left empty. */}
+          <div className="grid grid-cols-1 gap-8 xl:grid-cols-12 xl:gap-12">
+            <div className={cn("flex flex-col justify-end gap-7", footnote ? "xl:col-span-8" : "xl:col-span-12")}>
               {eyebrow ? <Eyebrow tone={dark ? "dark" : "light"}>{eyebrow}</Eyebrow> : null}
               <p data-statement className={cn("text-[clamp(1.625rem,1.05rem+2.4vw,3.25rem)] font-heading leading-[1.2] font-semibold tracking-tight text-pretty", dark ? "text-white" : "text-ink")}>
                 {parts.map((part, i) =>
@@ -97,7 +97,7 @@ export function Statement({ eyebrow, parts, footnote, tone = "light", background
               <div
                 data-statement-foot
                 className={cn(
-                  "flex flex-col gap-6 rounded-3xl border-t-2 p-6 lg:col-span-4 lg:self-end",
+                  "flex flex-col gap-6 rounded-3xl border-t-2 p-6 xl:col-span-4 xl:self-end",
                   dark ? "border-cyan bg-white/5 backdrop-blur-sm" : "border-cyan-ink bg-surface",
                 )}
               >

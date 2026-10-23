@@ -57,7 +57,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
               <LanguageSwitcher current={locale} label={dict.common.language} />
               <Link
                 href={portalHref(locale, "signIn")}
-                className="hidden min-h-10 items-center rounded-full px-4 text-sm text-white transition-colors hover:bg-white/5 lg:inline-flex"
+                className="hidden min-h-10 items-center rounded-full px-4 text-sm whitespace-nowrap text-white transition-colors hover:bg-white/5 lg:inline-flex"
               >
                 {dict.common.signIn}
               </Link>
