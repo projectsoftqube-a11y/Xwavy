@@ -1,12 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { Alexandria, Geist_Mono, Google_Sans, IBM_Plex_Sans_Arabic, Sora } from "next/font/google";
 
+import { Analytics } from "@/components/analytics/Analytics";
 import { MotionProvider } from "@/components/animation/MotionProvider";
 import { SmoothScrollProvider } from "@/components/animation/SmoothScrollProvider";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
+import { gaMeasurementId, siteUrl } from "@/config/site";
 import { localeMeta, locales } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/href";
+import { shareImage } from "@/lib/metadata";
 
 import "../globals.css";
 
@@ -63,10 +67,9 @@ export function generateStaticParams() {
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const dict = await getDictionary();
-  const siteUrl = process.env.SITE_URL;
 
   return {
-    ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
+    metadataBase: siteUrl,
     title: { default: dict.meta.title, template: dict.meta.titleTemplate },
     description: dict.meta.description,
     applicationName: "Xwavy",
@@ -80,8 +83,9 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: localeMeta[locale].ogLocale,
       title: dict.meta.title,
       description: dict.meta.description,
+      images: [shareImage(locale)],
     },
-    twitter: { card: "summary", title: dict.meta.title, description: dict.meta.description },
+    twitter: { card: "summary_large_image", title: dict.meta.title, description: dict.meta.description, images: [shareImage(locale)] },
   };
 }
 
@@ -114,6 +118,9 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
             <SiteFooter locale={locale} dict={dict} />
           </SmoothScrollProvider>
         </MotionProvider>
+        {gaMeasurementId ? (
+          <Analytics measurementId={gaMeasurementId} labels={dict.common.cookies} policyHref={localeHref(locale, "/legal/cookies")} />
+        ) : null}
       </body>
     </html>
   );

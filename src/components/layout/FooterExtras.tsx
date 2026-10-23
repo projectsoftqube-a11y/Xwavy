@@ -3,6 +3,21 @@
 import { ArrowUp } from "lucide-react";
 import { useLenis } from "lenis/react";
 
+import { OPEN_COOKIE_SETTINGS } from "@/components/analytics/Analytics";
+
+/** Reopens the analytics consent banner, so a choice can be changed later. */
+export function CookieSettings({ label }: { label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={() => window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS))}
+      className="inline-flex min-h-10 items-center rounded-full border border-white/12 px-4 text-sm text-mist transition-colors hover:border-white/40 hover:text-white"
+    >
+      {label}
+    </button>
+  );
+}
+
 /** Scrolls back to the top through Lenis (instant when motion is reduced). */
 export function BackToTop({ label }: { label: string }) {
   const lenis = useLenis();

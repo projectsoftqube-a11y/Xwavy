@@ -24,13 +24,29 @@ full RTL.
 
 ## Environment
 
-| Variable   | Purpose                                                                       |
-| ---------- | ----------------------------------------------------------------------------- |
-| `SITE_URL` | Production origin; enables absolute canonical/hreflang URLs (`metadataBase`). |
+All are read at build time: set them on the host, then rebuild.
 
-Portal addresses (sign in, sign up, idea directory) are set in
-`src/config/site.ts`. They point at the current xwavy.com until the new
-portal's addresses are confirmed.
+| Variable                        | Purpose                                                                                                                                       |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_URL`                      | This site's origin. Defaults to `https://www.xwavy.com`. Used for canonical/hreflang URLs, `sitemap.xml`, `robots.txt` and the social images. |
+| `PORTAL_URL`                    | The portal's origin (sign in, sign up, idea directory), e.g. `https://app.xwavy.com`. **Required before this site goes live on xwavy.com.**   |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Optional Google Analytics 4 ID (`G-…`). Unset: no analytics and no cookie banner. Set: GA loads only after the visitor accepts.               |
+
+`PORTAL_URL` falls back to the current xwavy.com, which is the right target
+while that platform is live and this site runs elsewhere. Once this site
+replaces xwavy.com, the fallback would point the site at itself: the proxy
+then skips its portal redirects (no loop), but every Sign in / Post your idea
+button would lead back here. The portal's page paths (`/login`,
+`/submit-idea`, `/ideas`) are in `src/config/site.ts`; change them there if the
+new portal names them differently.
+
+Old xwavy.com URLs are handled in `src/proxy.ts`: `/login`, `/signin`,
+`/signup` and `/submit-idea` go to the portal, `/investors` to
+`/for-investors`. Any other unknown URL gets the localized 404.
+
+When analytics is turned on, update the cookie policy
+(`src/i18n/pages/legal.ts`, `cookies`) to name the Google Analytics cookies
+before launch, as that policy promises.
 
 ## Pages
 
@@ -62,9 +78,12 @@ src/
   app/[lang]/        root layout (fonts, metadata, providers, header/footer) and pages
   app/globals.css    design tokens and base styles
   app/*.png|ico      favicon, app icon and Apple touch icon (Next file conventions)
-  proxy.ts           locale redirect
+  app/robots.ts, app/sitemap.ts   robots.txt and sitemap.xml (every page, both languages)
+  app/[lang]/[...rest]   unknown URLs → localized 404
+  proxy.ts           locale redirect; old xwavy.com URLs → portal or renamed page
   i18n/              locale config, dictionaries (en, ar), per-page copy (pages/)
   components/
+    analytics/       GA4 behind a consent banner (off unless NEXT_PUBLIC_GA_MEASUREMENT_ID)
     animation/       SmoothScrollProvider (Lenis), MotionProvider, Reveal
     layout/          Container (1520px cap, 90% from 1600px), Section, SiteFooter
     navigation/      SiteHeader, MobileMenu, LanguageSwitcher
@@ -73,10 +92,11 @@ src/
                      FaqSection, CtaPanel
     ui/              Button, Eyebrow, SectionHeading
   sections/          page-specific sections (home, pricing, contact, legal)
-  config/site.ts     name, email, logo, portal links
+  config/site.ts     name, email, logo, site and portal URLs
   lib/               gsap (single import point), motion constants, href and
                      metadata helpers, cn
 public/
+  og/                social share cards (1200×630), one per language
   brand/             logo
   images/people/     all photography (male Emirati cast)
 docs/

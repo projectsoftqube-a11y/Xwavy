@@ -74,6 +74,15 @@ const en = {
       body: "Write to us at info@xwavy.com, or choose a topic on the contact page.",
       cta: "Contact us",
     },
+    /** Consent banner. Shown only when analytics is configured (NEXT_PUBLIC_GA_MEASUREMENT_ID). */
+    cookies: {
+      label: "Cookie consent",
+      message: "We’d like to use Google Analytics cookies to understand how the site is used. They’re only set if you accept.",
+      accept: "Accept",
+      decline: "Decline",
+      policy: "Cookie policy",
+      settings: "Cookie settings",
+    },
   },
 
   footer: {

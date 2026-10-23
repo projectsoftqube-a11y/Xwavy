@@ -3,11 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
-import { BackToTop } from "@/components/layout/FooterExtras";
+import { BackToTop, CookieSettings } from "@/components/layout/FooterExtras";
 import { FooterNext } from "@/components/layout/FooterNext";
 import { LanguageSwitcher } from "@/components/navigation/LanguageSwitcher";
 import { Button } from "@/components/ui/Button";
-import { siteConfig } from "@/config/site";
+import { gaMeasurementId, siteConfig } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { localeHref, portalHref } from "@/lib/href";
@@ -99,6 +99,8 @@ export function SiteFooter({ locale, dict }: SiteFooterProps) {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <LanguageSwitcher current={locale} label={dict.common.language} className="border border-white/12" />
+            {/* Only when analytics is on: otherwise there is no consent to change. */}
+            {gaMeasurementId ? <CookieSettings label={dict.common.cookies.settings} /> : null}
             <BackToTop label={t.backToTop} />
           </div>
         </div>
