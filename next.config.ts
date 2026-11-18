@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Serve /public images as they are: Vercel image optimisation is a paid allowance on the Hobby plan
+  // and answers 402 once it is used up, which leaves every next/image blank.
+  images: { unoptimized: true },
   turbopack: {
     rules: {
       "*.css": {
